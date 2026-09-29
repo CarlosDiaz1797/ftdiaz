@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Carlos Flores Díaz · Estrategia, Rehabilitación y Bienestar</title>
+<meta name="description" content="Carlos Flores Díaz: asesoría en seguros de vida, ahorro y retiro; clínica de fisioterapia y rehabilitación Rhinos Quiro; y bienestar con Immunotec.">
+<meta name="theme-color" content="#031633">
+
+<!-- Vista previa al compartir el enlace (WhatsApp, Facebook).
+     Cuando publiques el sitio, cambia la imagen por la dirección completa,
+     por ejemplo: https://tudominio.com/assets/logo-diaz.png -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Carlos Flores Díaz">
+<meta property="og:description" content="Estrategia · Rehabilitación · Bienestar. Explora, desliza y descubre.">
+<meta property="og:image" content="assets/logo-diaz.png">
+
+<link rel="icon" type="image/webp" href="assets/logo-diaz-transparente.webp">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- ============ BIENVENIDA (1 segundo, solo la primera vez por visita) ============ -->
+<div class="splash" id="splash" aria-hidden="true">
+  <div class="splash-stars"></div>
+  <img src="assets/logo-diaz-transparente.webp" alt="" class="splash-logo">
+</div>
+<script>try{if(sessionStorage.getItem('splashVisto')){document.getElementById('splash').remove();}else{sessionStorage.setItem('splashVisto','1');}}catch(e){}</script>
+
+<!-- ============ FONDO ESPACIAL ============ -->
+<div class="space" aria-hidden="true">
+  <div class="nebula-img"></div>
+  <div class="planet" aria-hidden="true"><img src="assets/planeta.png" alt=""></div>
+  <div class="parallax" id="parallax">
+    <div class="milkyway"></div>
+    <div class="nebula n1"></div><div class="nebula n2"></div><div class="nebula n3"></div><div class="nebula n4"></div>
+    <div class="glow-red g1"></div><div class="glow-red g2"></div>
+  </div>
+  <div class="clouds back"></div>
+  <div class="clouds red"></div>
+  <div class="clouds front"></div>
+  <div class="tint t-strategy"></div><div class="tint t-rehab"></div><div class="tint t-wellness"></div><div class="tint t-gold"></div>
+  <canvas id="starfield"></canvas>
+  <div class="vignette"></div>
+</div>
+
+<!-- ============ MENÚ FIJO (aparece al bajar) ============ -->
+<nav class="snav" aria-label="Secciones">
+  <button class="brand-mini" type="button" aria-label="Ir al inicio"><img src="assets/logo-diaz-transparente.webp" alt="" draggable="false"></button>
+  <span class="snav-hi" id="snavHi" hidden></span>
+  <div class="snav-links">
+    <a href="#rehabilitacion" data-sec="rehabilitacion">Rehabilitación</a>
+    <a href="#estrategia" data-sec="estrategia">Estrategia</a>
+    <a href="#bienestar" data-sec="bienestar">Bienestar</a>
+    <a href="#sobre-mi" data-sec="sobre-mi">Sobre mí</a>
+  </div>
+  <button type="button" class="snav-menu" data-mega-open aria-label="Abrir menú">☰</button>
+  <div class="progress" aria-hidden="true"><i></i></div>
+</nav>
+
+<!-- ============ BARRA SUPERIOR ============ -->
+<header class="topbar">
+  <button class="brand" id="homeBtn" type="button" aria-label="Ir al inicio">
+    <img src="assets/logo-diaz-transparente.webp" alt="Logotipo Díaz" draggable="false">
+  </button>
+  <button class="about" id="aboutBtn" type="button" aria-expanded="false" aria-controls="mega">
+    <span aria-hidden="true">•••</span><i aria-hidden="true"></i><b>MENÚ</b>
+  </button>
+</header>
+
+<main>
+  <!-- ============ 1. INICIO: CARRUSEL ============ -->
+  <section class="hero" id="inicio">
+    <div class="intro">
+      <h1>REHABILITACIÓN <em>·</em> ESTRATEGIA <em>·</em> BIENESTAR</h1>
+      <p class="lead">Explora, desliza y descubre.</p>
+    </div>
+
+    <div class="deck-area" role="region" aria-roledescription="carrusel" aria-label="Áreas de servicio">
+      <button class="nav left" id="prev" type="button" aria-label="Tarjeta anterior"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+
+      <!-- Orden en pantalla: Rehabilitación (izquierda) · Estrategia (centro) · Bienestar (derecha) -->
+      <div class="deck" id="deck">
+        <article class="card" data-index="0" data-area="rehab" data-pos="left" aria-label="Rehabilitación, clínica Rhinos Quiro">
+          <img class="visual" src="assets/card-rehabilitacion.jpg" alt="" draggable="false" style="object-position: 62% 40%">
+          <div class="shade"></div>
+          <div class="shine"></div>
+          <div class="partner"><img src="assets/ft-deportivo-transparente.png" alt="FT Deportivo" draggable="false"></div>
+          <div class="copy">
+            <h2>REHABILITACIÓN</h2>
+            <p>CLÍNICA DE FISIOTERAPIA</p>
+          </div>
+          <button class="go" type="button" aria-label="Explorar Rehabilitación"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+        </article>
+
+        <article class="card" data-index="1" data-area="strategy" data-pos="center" aria-label="Estrategia, seguros de vida">
+          <img class="visual" src="assets/card-estrategia.jpg" alt="" draggable="false" style="object-position: 50% 42%">
+          <div class="shade"></div>
+          <div class="shine"></div>
+          <div class="copy">
+            <h2>ESTRATEGIA</h2>
+            <p>SEGUROS DE VIDA</p>
+          </div>
+          <button class="go" type="button" aria-label="Explorar Estrategia"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+        </article>
+
+        <article class="card" data-index="2" data-area="wellness" data-pos="right" aria-label="Bienestar, Immunotec">
+          <img class="visual" src="assets/card-bienestar.jpg" alt="" draggable="false">
+          <div class="shade"></div>
+          <div class="shine"></div>
+          <div class="partner"><img src="assets/immunotec-transparente.png" alt="Immunotec" draggable="false"></div>
+          <div class="copy">
+            <h2>BIENESTAR</h2>
+            <p>IMMUNOTEC</p>
+          </div>
+          <button class="go" type="button" aria-label="Explorar Bienestar"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+        </article>
+      </div>
+
+      <div class="floor" aria-hidden="true"></div>
+      <button class="nav right" id="next" type="button" aria-label="Tarjeta siguiente"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+    </div>
+
+    <div class="dots" id="dots" role="group" aria-label="Elegir tarjeta">
+      <button type="button" data-go="0"><span>Rehabilitación</span></button>
+      <button type="button" data-go="1"><span>Estrategia</span></button>
+      <button type="button" data-go="2"><span>Bienestar</span></button>
+    </div>
+    <a class="scroll-cue" href="#estrategia">DESCUBRE MÁS <span aria-hidden="true">↓</span></a>
+  </section>
+
+  <!-- ============ SOBRE MÍ: MI HISTORIA ============ -->
+  <section class="story" id="sobre-mi" aria-labelledby="story-title">
+    <div class="about-section story-top">
+      <div class="about-photo">
+        <img src="assets/sobre-mi.jpg" alt="Carlos con camisa blanca y laptop" width="900" height="846" loading="lazy" decoding="async">
+      </div>
+      <div class="story-intro">
+        <p class="mini reveal" style="--d:0">SOBRE MÍ</p>
+        <h2 id="story-title" class="big reveal" style="--d:1">Hola, soy Carlos</h2>
+        <p class="story-lead reveal" style="--d:2">Sé lo que es empezar de cero, porque me tocó vivirlo.</p>
+        <ol class="story-line">
+          <li class="reveal" style="--d:3"><b>El accidente</b><span>Un accidente automovilístico cambió mi vida por completo.</span></li>
+          <li class="reveal coma" style="--d:4"><b>10 días en coma</b><span>Y un mes hospitalizado, sin saber cómo iba a salir adelante.</span><svg class="ecg" viewBox="0 0 220 40" aria-hidden="true"><path pathLength="100" d="M0 22 H56 L64 22 L72 8 L80 36 L88 14 L94 22 H132 L140 22 L148 4 L156 38 L164 12 L170 22 H220"/></svg></li>
+          <li class="reveal" style="--d:5"><b>La recuperación</b><span>Recuperar mi salud y mi economía fue un proceso difícil.</span></li>
+          <li class="reveal now" style="--d:6"><b>Hoy</b><span>Desde mi experiencia, te ayudo a prevenir y a asegurar tu futuro financiero y de salud.</span></li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="meet reveal" style="--d:1">
+      <p class="mini">CONÓCEME EN 30 SEGUNDOS</p>
+      <div class="meet-row">
+        <div class="meet-card" style="--c:#ff5a78"><i>01</i><b>Por qué hago esto</b><span>Un accidente me enseñó lo que cuesta no estar preparado.</span></div>
+        <div class="meet-card" style="--c:#4f9bff"><i>02</i><b>Mi proyecto</b><span>Rhinos Quiro, mi clínica de rehabilitación, donde acompaño recuperaciones como la mía.</span></div>
+        <div class="meet-card" style="--c:#8ddaff"><i>03</i><b>Fuera del trabajo</b><span>Conocer personas y escuchar sus historias de vida.</span></div>
+        <div class="meet-card" style="--c:#e8c67a"><i>04</i><b>Lo que más me importa</b><span>Conexión, confianza y sinceridad con cada persona.</span></div>
+        <div class="meet-card" style="--c:#b9a3ff"><i>05</i><b>Mi promesa</b><span>Si algo no te conviene, te lo digo.</span></div>
+      </div>
+    </div>
+
+    <div class="tell reveal" style="--d:1">
+      <div class="tell-head">
+        <img src="assets/avatar-carlos.jpg" alt="" class="tell-av" loading="lazy" decoding="async">
+        <div>
+          <p class="tell-q">Yo ya te conté mi historia. ¿Cuál es la tuya?</p>
+          <p class="tell-sub">Me encantaría conocerte. Elige lo que estás viviendo y cuéntamelo.</p>
+        </div>
+      </div>
+      <div class="tell-opts" id="tellOpts">
+        <button type="button" class="ans" data-t="familia">Estoy formando una familia</button>
+        <button type="button" class="ans" data-t="lesion">Estoy recuperándome de una lesión</button>
+        <button type="button" class="ans" data-t="futuro">Me preocupa mi futuro y mi retiro</button>
+        <button type="button" class="ans" data-t="salud">Quiero cuidar más mi salud</button>
+      </div>
+      <form class="tell-form" id="tellForm" hidden>
+        <label for="tellName">¿Cómo te llamas?</label>
+        <div class="tell-row">
+          <input id="tellName" type="text" autocomplete="given-name" maxlength="30" placeholder="Tu nombre">
+          <button class="btn primary" type="submit">CONTÁRSELO A CARLOS <span aria-hidden="true">→</span></button>
+        </div>
+      </form>
+      <div class="tell-foot">
+        <span class="avail" data-avail></span>
+        <a class="btn ghost" href="https://calendar.app.google/PsiHGaARBLMncEug8" data-link="cafe" target="_blank" rel="noopener">CAFÉ VIRTUAL DE 15 MIN · SIN COMPROMISO</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CONSTELACIÓN DE LAS TRES ÁREAS ============ -->
+  <section class="constellation" id="constelacion" aria-labelledby="const-title">
+    <p class="mini reveal" style="--d:0">TRES ÁREAS · UN MISMO OBJETIVO</p>
+    <h2 id="const-title" class="tool-title reveal" style="--d:1">Tu vida, completa</h2>
+    <div class="const-wrap" id="constWrap">
+      <svg viewBox="0 0 800 520" aria-hidden="true" id="constSvg">
+        <defs>
+          <linearGradient id="gER" gradientUnits="userSpaceOnUse" x1="400" y1="70" x2="120" y2="440"><stop offset="0" stop-color="#4f9bff"/><stop offset="1" stop-color="#ff5a78"/></linearGradient>
+          <linearGradient id="gRB" gradientUnits="userSpaceOnUse" x1="120" y1="440" x2="680" y2="440"><stop offset="0" stop-color="#ff5a78"/><stop offset="1" stop-color="#e8c67a"/></linearGradient>
+          <linearGradient id="gBE" gradientUnits="userSpaceOnUse" x1="680" y1="440" x2="400" y2="70"><stop offset="0" stop-color="#e8c67a"/><stop offset="1" stop-color="#4f9bff"/></linearGradient>
+          <radialGradient id="gCore"><stop offset="0" stop-color="#8ddaff" stop-opacity=".35"/><stop offset="1" stop-color="#8ddaff" stop-opacity="0"/></radialGradient>
+        </defs>
+        <g id="constBg"></g>
+        <circle cx="400" cy="317" r="170" fill="url(#gCore)"/>
+        <path class="edge e-strategy e-rehab" d="M400 70 L120 440" pathLength="1" stroke="url(#gER)" style="--o:0"/>
+        <path class="edge e-rehab e-wellness" d="M120 440 L680 440" pathLength="1" stroke="url(#gRB)" style="--o:1"/>
+        <path class="edge e-wellness e-strategy" d="M680 440 L400 70" pathLength="1" stroke="url(#gBE)" style="--o:2"/>
+        <g id="constEdgeStars"></g>
+        <circle class="comet" r="4">
+          <animateMotion dur="8s" repeatCount="indefinite" path="M400 70 L680 440 L120 440 Z"/>
+        </circle>
+      </svg>
+      <button type="button" class="node n-strategy" data-target="estrategia" data-k="strategy" style="left:50%;top:13.46%"><i></i><span>Estrategia</span><small>Protege tu futuro</small></button>
+      <button type="button" class="node n-rehab" data-target="rehabilitacion" data-k="rehab" style="left:15%;top:84.6%"><i></i><span>Rehabilitación</span><small>Recupera tu movimiento</small></button>
+      <button type="button" class="node n-wellness" data-target="bienestar" data-k="wellness" style="left:85%;top:84.6%"><i></i><span>Bienestar</span><small>Cuida tus células</small></button>
+      <p class="const-center">Toca una estrella para viajar a cada área</p>
+    </div>
+  </section>
+
+  <!-- ============ 2. SECCIONES DESTACADAS ============ -->
+  <section class="feature" id="estrategia">
+    <div class="feature-head">
+      <p class="mini reveal" style="--d:0">01 · SEGUROS DE VIDA</p>
+      <h2 class="big reveal" style="--d:1">ESTRATEGIA</h2>
+    </div>
+    <div class="feature-media">
+      <img src="assets/card-estrategia.jpg" alt="Ángel de la Independencia dorado frente al edificio de New York Life" style="object-position: 50% 50%" loading="lazy" decoding="async">
+    </div>
+    <div class="feature-text">
+      <p class="reveal" style="--d:2">Protección, ahorro y retiro diseñados a partir de tus objetivos. Planea hoy el futuro que quieres vivir mañana y protege lo que has construido.</p>
+      <ul class="chips reveal" style="--d:3">
+        <li>Seguros individuales</li><li>Protección y ahorro</li><li>Plan de retiro (PPR)</li><li>Patrimonio y herencia</li><li>Educación universitaria</li><li>Gastos médicos mayores</li><li>Protección para mujeres</li>
+      </ul>
+      <div class="actions reveal" style="--d:4">
+        <button class="btn" type="button" data-open="strategy">VER OPCIONES <span aria-hidden="true">→</span></button>
+        <button class="btn primary" type="button" data-open="strategy" data-goto="asesoria-panel">AGENDAR MI ASESORÍA <span aria-hidden="true">→</span></button>
+      </div>
+      <div class="reveal" style="--d:5"><div data-place="strategy"></div></div>
+    </div>
+  </section>
+
+  <nav class="sec-index" style="--c:#4f9bff" aria-label="En Estrategia">
+    <span>En Estrategia:</span>
+    <a href="#realidad">1 · La realidad</a>
+    <a href="#familia">2 · ¿Quién cuenta contigo?</a>
+    <a href="#proteccion" data-tab="tab-fam">3 · Protección familiar</a>
+    <a href="#proteccion" data-tab="tab-retiro">4 · Retiro (PPR)</a>
+    <a href="#mitos">5 · Mitos</a>
+  </nav>
+
+  <!-- ============ LA REALIDAD (seguros de vida) ============ -->
+  <section class="tool reality" id="realidad" aria-labelledby="real-title">
+    <div class="tool-head reveal" style="--d:0">
+      <p class="mini">ESTRATEGIA · PASO 1 DE 5 · LA REALIDAD</p>
+      <h2 id="real-title" class="tool-title">86 de cada 100 mexicanos no tienen seguro de vida</h2>
+      <p class="tool-sub">Adultos de 18 a 70 años. Cada pilar es una realidad que vive tu familia.</p>
+    </div>
+    <div class="pillars reveal" style="--d:1" id="pillars" role="img" aria-label="De cada 100 mexicanos, 86 no tienen seguro de vida y 14 sí">
+      <div class="pillar red" style="--fill:86"><b data-count="86" data-dec="0">0</b><div class="col"><i class="liq"></i><span class="lvl">86%</span></div><small>de cada 100 mexicanos <strong>no tienen</strong> seguro de vida</small></div>
+      <div class="pillar gold" style="--fill:14"><b data-count="14" data-dec="0">0</b><div class="col"><i class="liq"></i><span class="lvl">14%</span></div><small>de cada 100 <strong>sí están protegidos</strong></small></div>
+      <div class="pillar live"><b id="payCounter">$0</b><div class="col"><i class="beam"></i><span class="pico">$</span></div><small>pagaron las aseguradoras a familias <strong>desde que llegaste</strong> · $552 millones al día (2024)</small></div>
+      <div class="pillar"><b class="m" data-count="33.4" data-dec="1">0</b><div class="col"><i class="beam"></i></div><small>millones trabajan en la informalidad, <strong>sin seguridad social</strong></small></div>
+      <div class="pillar"><b class="m" data-count="1.9" data-dec="1">0</b><div class="col"><i class="beam"></i></div><small>millones están <strong>sin empleo</strong> ni sueldo en casa</small></div>
+    </div>
+    <div class="real-ask reveal" style="--d:2">
+        <p class="real-q">Si mañana tu sueldo se detiene, ¿quién protege a tu familia?</p>
+        <div class="real-answers" id="realAns">
+          <button type="button" class="ans" data-a="no">No tengo seguro de vida</button>
+          <button type="button" class="ans" data-a="trabajo">Solo el de mi trabajo</button>
+          <button type="button" class="ans" data-a="si">Sí tengo, pero no sé si alcanza</button>
+        </div>
+        <p class="ans-reply" id="ansReply" aria-live="polite"></p>
+    </div>
+    <p class="source reveal" style="--d:2">Fuentes: INEGI, Encuesta Nacional de Inclusión Financiera (ENIF) 2024 · AMIS, pagos de seguros de vida 2024 · INEGI, Encuesta Nacional de Ocupación y Empleo (ENOE), agosto 2026.</p>
+  </section>
+
+  <!-- ============ TU CONSTELACIÓN FAMILIAR ============ -->
+  <section class="tool" id="familia" aria-labelledby="fami-title">
+    <div class="tool-head reveal" style="--d:0">
+      <p class="mini">ESTRATEGIA · PASO 2 DE 5 <span class="tag">INTERACTIVO</span></p>
+      <h2 id="fami-title" class="tool-title">¿Quién cuenta contigo?</h2>
+      <p class="tool-sub">Escribe el nombre de las personas que dependen de ti. Cada una se vuelve una estrella de tu constelación.</p>
+    </div>
+    <div class="fami reveal" style="--d:1">
+      <form class="fami-form" id="famiForm" autocomplete="off">
+        <label class="sr-only" for="famiName">Nombre</label>
+        <input id="famiName" type="text" maxlength="18" placeholder="Nombre (ej. Sofía)">
+        <label class="sr-only" for="famiRole">Parentesco</label>
+        <select id="famiRole">
+          <option>Pareja</option><option>Hijo</option><option>Hija</option><option>Mamá</option><option>Papá</option><option>Otro</option>
+        </select>
+        <button class="btn primary" type="submit">AGREGAR ESTRELLA <span aria-hidden="true">✦</span></button>
+      </form>
+      <div class="fami-sky">
+        <svg viewBox="0 0 700 380" id="famiSvg" aria-hidden="true"></svg>
+        <p class="fami-msg" id="famiMsg" aria-live="polite">Tu estrella está en el centro. Agrega a tu familia.</p>
+      </div>
+      <div class="fami-foot">
+        <p class="fine">Los nombres solo se ven en tu pantalla; no se guardan ni se envían.</p>
+        <button type="button" class="btn" id="famiGo" hidden>CALCULAR CUÁNTO NECESITAN <span aria-hidden="true">→</span></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ HERRAMIENTA: ¿CUÁNTO NECESITA TU FAMILIA? (Estrategia · seguro de vida) ============ -->
+  <section class="tool" id="proteccion" aria-labelledby="fam-title">
+    <div class="tool-head reveal" style="--d:0">
+      <p class="mini">ESTRATEGIA · PASOS 3 Y 4 DE 5 <span class="tag">INTERACTIVO</span></p>
+      <h2 id="fam-title" class="tool-title">Calcula tu tranquilidad</h2>
+      <p class="tool-sub">Dos preguntas que todos deberíamos hacernos. Elige una.</p>
+    </div>
+    <div class="calc-tabs reveal" style="--d:1" role="tablist" aria-label="Calculadoras">
+      <button type="button" role="tab" id="tab-fam" aria-controls="panel-fam" aria-selected="true">¿Cuánto necesita tu familia si tú no estás?</button>
+      <button type="button" role="tab" id="tab-retiro" aria-controls="panel-retiro" aria-selected="false">¿Cuánto podrías tener a los 65?</button>
+    </div>
+    <div class="reveal" style="--d:2">
+    <div class="calc fam" id="panel-fam" role="tabpanel" aria-labelledby="tab-fam">
+      <div class="calc-controls">
+        <div class="range">
+          <span class="range-top"><label for="fam-ingreso">Tu ingreso al mes</label><output id="fam-ingreso-out"></output></span>
+          <input id="fam-ingreso" type="range" min="5000" max="150000" step="1000" value="30000">
+        </div>
+        <div class="range">
+          <span class="range-top"><label for="fam-anos">Años de protección</label><output id="fam-anos-out"></output></span>
+          <input id="fam-anos" type="range" min="3" max="25" step="1" value="10">
+        </div>
+        <div class="range">
+          <span class="range-top"><span>Hijos</span><output id="fam-hijos-out"></output></span>
+          <div class="stepper">
+            <button type="button" id="fam-menos" aria-label="Un hijo menos">−</button>
+            <div class="kids" id="fam-kids" aria-hidden="true"></div>
+            <button type="button" id="fam-mas" aria-label="Un hijo más">+</button>
+          </div>
+        </div>
+        <div class="range">
+          <span class="range-top"><label for="fam-deudas">Deudas (hipoteca, créditos)</label><output id="fam-deudas-out"></output></span>
+          <input id="fam-deudas" type="range" min="0" max="5000000" step="50000" value="500000">
+        </div>
+        <div class="range">
+          <span class="range-top"><label for="fam-ahorro">Ahorros y seguros que ya tienes</label><output id="fam-ahorro-out"></output></span>
+          <input id="fam-ahorro" type="range" min="0" max="5000000" step="50000" value="0">
+        </div>
+      </div>
+      <div class="fam-result">
+        <p class="mini">SUMA ASEGURADA SUGERIDA</p>
+        <p class="fam-total" id="fam-total">$0</p>
+        <div class="fam-bar" id="fam-bar" role="img" aria-label=""></div>
+        <ul class="fam-legend" id="fam-legend"></ul>
+        <p class="fam-less" id="fam-less" hidden></p>
+        <a class="btn primary" id="fam-wa" href="https://wa.me/525573316238" target="_blank" rel="noopener">QUIERO COTIZAR MI SEGURO <span aria-hidden="true">→</span></a>
+        <p class="fine">Estimación orientativa: ingreso × 12 × años de protección + deudas + $400,000 de educación por hijo − lo que ya tienes. La suma asegurada y la prima se definen en tu asesoría y dependen de la aseguradora y de tu perfil.</p>
+      </div>
+    </div>
+    <div class="scenario" id="panel-scenario">
+      <div class="seg" role="tablist" aria-label="Comparar escenarios">
+        <button type="button" role="tab" class="seg-btn" data-sc="sin" aria-selected="true">Sin seguro</button>
+        <button type="button" role="tab" class="seg-btn" data-sc="con" aria-selected="false">Con seguro</button>
+        <i class="seg-glow" aria-hidden="true"></i>
+      </div>
+      <p class="sc-lead" id="scLead"></p>
+      <ol class="timeline" id="scLine"></ol>
+    </div>
+    <div class="calc" id="panel-retiro" role="tabpanel" aria-labelledby="tab-retiro" hidden>
+      <div class="calc-controls">
+        <div class="range">
+          <span class="range-top"><label for="calc-edad">Tu edad</label><output id="calc-edad-out">30 años</output></span>
+          <input id="calc-edad" type="range" min="20" max="60" step="1" value="30">
+        </div>
+        <div class="range">
+          <span class="range-top"><label for="calc-ahorro">Ahorro al mes</label><output id="calc-ahorro-out">$2,000</output></span>
+          <input id="calc-ahorro" type="range" min="500" max="20000" step="500" value="2000">
+        </div>
+        <div class="calc-results">
+          <div><small>Tú aportarías</small><b id="calc-aporte">$0</b></div>
+          <div class="gold"><small>Podrías acumular*</small><b id="calc-total">$0</b></div>
+        </div>
+        <a class="btn primary" id="calc-wa" href="https://wa.me/525573316238" target="_blank" rel="noopener">QUIERO MI PLAN POR WHATSAPP <span aria-hidden="true">→</span></a>
+        <p class="fine">*Cálculo ilustrativo con un rendimiento supuesto de 5% anual. No es una cotización: rendimientos, costos y condiciones dependen del producto y de tu perfil.</p>
+      </div>
+      <figure class="calc-chart">
+        <div class="legend" aria-hidden="true">
+          <span><i class="sw sw-a"></i>Lo que aportas</span>
+          <span><i class="sw sw-b"></i>Con rendimiento</span>
+        </div>
+        <div class="chart-wrap">
+          <svg id="calc-svg" viewBox="0 0 640 300" role="img" aria-labelledby="calc-desc"></svg>
+          <div class="chart-tip" id="calc-tip" hidden></div>
+        </div>
+        <figcaption id="calc-desc" class="sr-only">Gráfica del ahorro acumulado por edad hasta los 65 años.</figcaption>
+      </figure>
+    </div>
+    </div>
+  </section>
+
+  <!-- ============ MITOS VS REALIDAD ============ -->
+  <section class="tool" id="mitos" aria-labelledby="mitos-title">
+    <div class="tool-head reveal" style="--d:0">
+      <p class="mini">ESTRATEGIA · PASO 5 DE 5 <span class="tag">INTERACTIVO</span></p>
+      <h2 id="mitos-title" class="tool-title">Lo que te han dicho del seguro de vida</h2>
+      <p class="tool-sub">Toca cada tarjeta para ver la realidad.</p>
+    </div>
+    <div class="myths reveal" style="--d:1" id="myths"></div>
+    <p class="myths-cta reveal" style="--d:2"><a href="https://wa.me/525573316238" class="btn ghost" data-wa="Hola Carlos, tengo una duda sobre los seguros de vida." target="_blank" rel="noopener">¿TIENES OTRA DUDA? PREGÚNTAME <span aria-hidden="true">→</span></a></p>
+  </section>
+
+  <section class="feature reverse" id="rehabilitacion">
+    <div class="feature-head">
+      <p class="mini reveal" style="--d:0">02 · RHINOS QUIRO · FISIOTERAPIA</p>
+      <h2 class="big reveal" style="--d:1">REHABILITACIÓN</h2>
+    </div>
+    <div class="feature-media">
+      <img src="assets/card-rehabilitacion.jpg" alt="Persona corriendo con ropa deportiva" style="object-position: 62% 40%" loading="lazy" decoding="async">
+    </div>
+    <div class="feature-text">
+      <p class="reveal" style="--d:2">Recupera tu movimiento con un proceso claro, guiado y acompañado en todo momento. Cada caso es diferente: empezamos con una valoración de tus necesidades.</p>
+      <ul class="chips reveal" style="--d:3">
+        <li>Fisioterapia</li><li>Valoración</li><li>Lesiones deportivas</li><li>Postquirúrgicas</li><li>Drenaje linfático</li><li>Kinesiotaping</li><li>Dermatofuncional</li>
+      </ul>
+      <div class="actions reveal" style="--d:4">
+        <button class="btn" type="button" data-open="rehab">VER SERVICIOS <span aria-hidden="true">→</span></button>
+        <a href="https://wa.me/525573316238" class="btn ghost" data-wa="Hola Carlos, tengo una pregunta sobre fisioterapia." target="_blank" rel="noopener">WHATSAPP</a>
+      </div>
+      <div class="reveal" style="--d:5">
+        <p class="steps-title">RESERVA TU CITA EN 3 PASOS</p>
+        <div data-steps></div>
+      </div>
+      <div class="reveal" style="--d:6"><div data-place="rehab"></div></div>
+    </div>
+  </section>
+
+  <!-- ============ HERRAMIENTA 2: MAPA DEL CUERPO (Rehabilitación) ============ -->
+  <nav class="sec-index" style="--c:#ff5a78" aria-label="En Rehabilitación">
+    <span>En Rehabilitación:</span>
+    <a href="#mapa">¿Dónde te duele?</a>
+    <a href="#rehabilitacion">Reserva tu cita</a>
+  </nav>
+
+  <section class="tool" id="mapa" aria-labelledby="mapa-title">
+    <div class="tool-head reveal" style="--d:0">
+      <p class="mini">REHABILITACIÓN <span class="tag">INTERACTIVO</span></p>
+      <h2 id="mapa-title" class="tool-title">¿Dónde te duele?</h2>
+      <p class="tool-sub">Toca una zona del cuerpo y te digo cómo podemos trabajarla.</p>
+    </div>
+    <div class="bodymap reveal" style="--d:1">
+      <div class="body-figure">
+        <svg viewBox="0 0 200 430" id="body-svg" aria-hidden="true">
+          <defs>
+            <linearGradient id="bodyGrad" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="0" y2="430"><stop offset="0" stop-color="#8ddaff" stop-opacity=".22"/><stop offset="1" stop-color="#2b5dff" stop-opacity=".08"/></linearGradient>
+          </defs>
+          <g class="silhouette">
+            <ellipse cx="100" cy="34" rx="20" ry="24"/>
+            <rect x="93" y="55" width="14" height="16" rx="6"/>
+            <path d="M68 78 Q100 68 132 78 L127 148 Q100 157 73 148 Z"/>
+            <path d="M75 170 Q100 163 125 170 L123 200 Q100 213 77 200 Z"/>
+            <rect x="49.5" y="89.4" width="16" height="69.2" rx="8.0" transform="rotate(10.8 57.5 124.0)"/>
+            <rect x="40.0" y="165.7" width="13" height="64.6" rx="6.5" transform="rotate(8.0 46.5 198.0)"/>
+            <ellipse cx="39" cy="248" rx="7" ry="11"/>
+            <rect x="72.0" y="214.0" width="22" height="82.1" rx="11.0" transform="rotate(2.8 83.0 255.0)"/>
+            <rect x="72.0" y="312.0" width="17" height="76.0" rx="8.5" transform="rotate(0.8 80.5 350.0)"/>
+            <ellipse cx="76" cy="410" rx="13" ry="7"/>
+            <rect x="134.5" y="89.4" width="16" height="69.2" rx="8.0" transform="rotate(-10.8 142.5 124.0)"/>
+            <rect x="147.0" y="165.7" width="13" height="64.6" rx="6.5" transform="rotate(-8.0 153.5 198.0)"/>
+            <ellipse cx="161" cy="248" rx="7" ry="11"/>
+            <rect x="106.0" y="214.0" width="22" height="82.1" rx="11.0" transform="rotate(-2.8 117.0 255.0)"/>
+            <rect x="111.0" y="312.0" width="17" height="76.0" rx="8.5" transform="rotate(-0.8 119.5 350.0)"/>
+            <ellipse cx="124" cy="410" rx="13" ry="7"/>
+            <ellipse class="joint" cx="100" cy="160" rx="21" ry="7"/>
+            <circle class="joint" cx="64" cy="86" r="9"/>
+            <circle class="joint" cx="51" cy="162" r="7"/>
+            <circle class="joint" cx="41" cy="234" r="5"/>
+            <circle class="joint" cx="85" cy="208" r="9"/>
+            <circle class="joint" cx="81" cy="304" r="9"/>
+            <circle class="joint" cx="80" cy="397" r="6"/>
+            <circle class="joint" cx="136" cy="86" r="9"/>
+            <circle class="joint" cx="149" cy="162" r="7"/>
+            <circle class="joint" cx="159" cy="234" r="5"/>
+            <circle class="joint" cx="115" cy="208" r="9"/>
+            <circle class="joint" cx="119" cy="304" r="9"/>
+            <circle class="joint" cx="120" cy="397" r="6"/>
+          </g>
+          <line class="scan" x1="20" x2="180" y1="0" y2="0"/>
+        </svg>
+        <div class="hotspots">
+          <button type="button" class="spot" data-zone="cuello" style="left:50.0%;top:14.7%" aria-label="Cuello"></button>
+          <button type="button" class="spot" data-zone="hombro" style="left:32.0%;top:20.0%" aria-label="Hombro izquierdo"></button>
+          <button type="button" class="spot" data-zone="hombro" style="left:68.0%;top:20.0%" aria-label="Hombro derecho"></button>
+          <button type="button" class="spot" data-zone="espalda" style="left:50.0%;top:26.0%" aria-label="Espalda y columna"></button>
+          <button type="button" class="spot" data-zone="codo" style="left:25.5%;top:37.7%" aria-label="Codo izquierdo"></button>
+          <button type="button" class="spot" data-zone="codo" style="left:74.5%;top:37.7%" aria-label="Codo derecho"></button>
+          <button type="button" class="spot" data-zone="muneca" style="left:20.5%;top:54.4%" aria-label="Muñeca y mano izquierdas"></button>
+          <button type="button" class="spot" data-zone="muneca" style="left:79.5%;top:54.4%" aria-label="Muñeca y mano derechas"></button>
+          <button type="button" class="spot" data-zone="cadera" style="left:37.0%;top:44.2%" aria-label="Cadera izquierda"></button>
+          <button type="button" class="spot" data-zone="cadera" style="left:63.0%;top:44.2%" aria-label="Cadera derecha"></button>
+          <button type="button" class="spot" data-zone="rodilla" style="left:40.5%;top:70.7%" aria-label="Rodilla izquierda"></button>
+          <button type="button" class="spot" data-zone="rodilla" style="left:59.5%;top:70.7%" aria-label="Rodilla derecha"></button>
+          <button type="button" class="spot" data-zone="tobillo" style="left:40.0%;top:92.3%" aria-label="Tobillo y pie izquierdos"></button>
+          <button type="button" class="spot" data-zone="tobillo" style="left:60.0%;top:92.3%" aria-label="Tobillo y pie derechos"></button>
+        </div>
+      </div>
+      <div class="zone-info" id="zone-info" aria-live="polite">
+        <div class="zone-empty">
+          <p class="zone-hint">Elige una zona</p>
+          <div class="zone-chips" id="zone-chips"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="feature" id="bienestar">
+    <div class="feature-head">
+      <p class="mini reveal" style="--d:0">03 · IMMUNOTEC</p>
+      <h2 class="big reveal" style="--d:1">BIENESTAR</h2>
+    </div>
+    <div class="feature-media">
+      <img src="assets/card-bienestar.jpg" alt="Ilustración de células y glutatión" loading="lazy" decoding="async">
+    </div>
+    <div class="feature-text">
+      <p class="reveal" style="--d:2">Suplementos precursores de glutatión, conocido como el “antioxidante maestro” de tus células, para complementar un estilo de vida saludable.</p>
+      <div class="buy-row reveal" style="--d:3">
+        <a class="buy" href="https://buy.stripe.com/9B66oA3BbazibBFfV6gw004" data-buy="mx" target="_blank" rel="noopener"><b>Immunocal MX</b><span>$1,499</span></a>
+        <a class="buy" href="https://buy.stripe.com/4gMdR2fjTgXG49d24ggw002" data-buy="platinum" target="_blank" rel="noopener"><b>Immunocal Platinum</b><span>$1,899</span></a>
+        <a class="buy" href="https://buy.stripe.com/eVq7sE8Vv0YIfRV4cogw003" data-buy="sport" target="_blank" rel="noopener"><b>Immunocal Sport</b><span>$2,099</span></a>
+        <p class="buy-group">Complementos</p>
+        <a class="buy" href="https://buy.stripe.com/fZu00cgnX8rabBF8sEgw007" data-buy="optimizer" target="_blank" rel="noopener"><b>Immunocal Optimizer</b><span>$1,199</span></a>
+        <a class="buy" href="https://buy.stripe.com/cNi8wI9Zz22M0X1gZagw006" data-buy="omega" target="_blank" rel="noopener"><b>Omega Gen V</b><span>$729</span></a>
+        <a class="buy" href="https://buy.stripe.com/7sYaEQb3DePyeNRfV6gw005" data-buy="bionutric" target="_blank" rel="noopener"><b>Bionutric</b><span>$649</span></a>
+        <p class="buy-group">Paquetes</p>
+        <a class="buy" href="https://buy.stripe.com/4gMbIU3Bb36QgVZ9wIgw008" data-buy="paqMxPlat" target="_blank" rel="noopener"><b>Immunocal MX + Platinum</b><span>$3,499</span></a>
+        <a class="buy" href="https://buy.stripe.com/4gM8wI4FfgXG215dMYgw009" data-buy="paq2Plat" target="_blank" rel="noopener"><b>2 Immunocal Platinum</b><span>$3,799</span></a>
+      </div>
+      <p class="ship-note reveal" style="--d:3"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h11v9H3zM14 9h4l3 3v3h-7z"/><circle cx="7" cy="17" r="2"/><circle cx="17.5" cy="17" r="2"/></svg><span><b>Envío incluido · entrega en 3 a 5 días hábiles.</b> Al pagar captura tu nombre completo, dirección de envío y correo electrónico.</span></p>
+      <div class="actions reveal" style="--d:4">
+        <button class="btn" type="button" data-open="wellness">VER PRODUCTOS <span aria-hidden="true">→</span></button>
+        <a class="btn ghost" href="assets/patentes-immunotec.pdf" data-patentes download="Patentes-Immunotec.pdf">PATENTES (PDF)</a>
+        <a class="btn ghost" href="assets/immunocal-pdr.pdf" data-doc="pdr" download="Immunocal-PDR.pdf">FICHA MÉDICA PDR (PDF)</a>
+        <a href="https://wa.me/525573316238" class="btn ghost" data-wa="Hola Carlos, quiero información sobre Immunocal." target="_blank" rel="noopener">WHATSAPP</a>
+      </div>
+      <p class="fine reveal" style="--d:5">Suplemento alimenticio. Este producto no es un medicamento. El consumo de este producto es responsabilidad de quien lo recomienda y de quien lo usa.</p>
+    </div>
+  </section>
+
+  <!-- ============ HERRAMIENTA 3: ¿QUÉ IMMUNOCAL ES PARA TI? (Bienestar) ============ -->
+  <nav class="sec-index" style="--c:#e8c67a" aria-label="En Bienestar">
+    <span>En Bienestar:</span>
+    <a href="#quiz">¿Qué Immunocal es para ti?</a>
+    <a href="#bienestar">Productos y precios</a>
+  </nav>
+
+  <section class="tool" id="quiz" aria-labelledby="quiz-title">
+    <div class="tool-head reveal" style="--d:0">
+      <p class="mini">BIENESTAR <span class="tag">INTERACTIVO</span></p>
+      <h2 id="quiz-title" class="tool-title">¿Qué Immunocal es para ti?</h2>
+      <p class="tool-sub">Tres preguntas rápidas y te recomiendo el tuyo.</p>
+    </div>
+    <div class="quiz reveal" style="--d:1" id="quiz-box" aria-live="polite"></div>
+  </section>
+
+  <!-- ============ 3. FRASE GIGANTE (cambia las palabras aquí) ============ -->
+  <section class="statement" aria-label="Protege, recupera, vive mejor">
+    <h2>
+      <span>PROTEGE</span>
+      <span>RECUPERA</span>
+      <span class="gold">VIVE</span>
+      <span class="gold">MEJOR</span>
+    </h2>
+  </section>
+
+  <!-- ============ 4. SOBRE MÍ ============ -->
+  <!-- ============ ASÍ TRABAJO CONTIGO ============ -->
+  <!-- ============ TESTIMONIOS (reales, con permiso) ============ -->
+  <section class="tool testi" id="testimonios" aria-labelledby="testi-title">
+    <div class="tool-head reveal" style="--d:0">
+      <p class="mini">LO QUE DICEN DE MÍ</p>
+      <h2 id="testi-title" class="tool-title">Personas que ya decidieron protegerse</h2>
+      <p class="tool-sub">Sus palabras, el día que firmaron.</p>
+    </div>
+    <div class="testi-row reveal" style="--d:1">
+      <figure class="testi-card">
+        <img src="assets/testimonio-1.jpg" alt="Clienta con flores y una bebida, rostro difuminado" width="640" height="800" loading="lazy" decoding="async">
+        <blockquote>Me da muchísimo gusto haber tomado esta decisión, y también siento tu felicidad a través de mi historia.</blockquote>
+        <figcaption><b>Clienta anónima</b><span class="testi-tag">Seguro de vida</span></figcaption>
+      </figure>
+      <figure class="testi-card">
+        <img src="assets/testimonio-2.jpg" alt="Clienta con el pulgar arriba junto a su solicitud firmada, rostro difuminado" width="640" height="800" loading="lazy" decoding="async">
+        <blockquote>Gracias, estoy segura de que será un gran paso para más cosas 🩷✨ Gracias por acompañar este proceso ✨</blockquote>
+        <figcaption><b>Clienta anónima</b><span class="testi-tag">Seguro de vida</span></figcaption>
+      </figure>
+      <figure class="testi-card">
+        <img src="assets/testimonio-3.jpg" alt="Clienta y Carlos revisando su solicitud en una cafetería, rostro de la clienta difuminado" width="640" height="677" loading="lazy" decoding="async">
+        <blockquote>Ya lo decidí… y eso me hace sentir orgullosa de mí y de ti 💚</blockquote>
+        <figcaption><b>Clienta anónima</b><span class="testi-tag">Seguro de vida</span></figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="tool howto" id="contacto" aria-labelledby="how-title">
+    <div class="tool-head reveal" style="--d:0">
+      <p class="mini">ASÍ TRABAJO CONTIGO</p>
+      <h2 id="how-title" class="tool-title">Sin presión, sin letra chiquita</h2>
+    </div>
+    <ol class="how-steps reveal" style="--d:1">
+      <li><i>1</i><b>Te escucho</b><span>Platicamos de ti, tu familia y lo que quieres lograr.</span></li>
+      <li><i>2</i><b>Analizo tu caso</b><span>Reviso qué necesitas de verdad, no lo que más me conviene vender.</span></li>
+      <li><i>3</i><b>Te explico opciones</b><span>Con números claros y en palabras sencillas, para que decidas tú.</span></li>
+      <li><i>4</i><b>Te acompaño</b><span>Antes, durante y después. No desaparezco al firmar.</span></li>
+    </ol>
+    <div class="promises reveal" style="--d:2">
+      <p class="mini">MIS COMPROMISOS CONTIGO</p>
+      <ul>
+        <li>No te presiono para contratar nada.</li>
+        <li>Te respondo en menos de 24 horas.</li>
+        <li>Te explico todo, incluida la letra chiquita.</li>
+        <li class="big-promise">Si algún día tu familia necesita cobrar su seguro, yo la acompaño en todo el trámite.</li>
+      </ul>
+    </div>
+    <div class="closing reveal" style="--d:3">
+      <img src="assets/avatar-carlos.jpg" alt="Carlos" class="closing-av" loading="lazy" decoding="async">
+      <p class="closing-q">¿Platicamos?</p>
+      <span class="avail" data-avail></span>
+      <div class="actions">
+        <a class="btn primary" href="https://calendar.app.google/PsiHGaARBLMncEug8" data-link="cafe" target="_blank" rel="noopener">CAFÉ VIRTUAL DE 15 MIN <span aria-hidden="true">→</span></a>
+        <a href="https://wa.me/525573316238" class="btn" data-wa="Hola Carlos, me gustaría platicar contigo." target="_blank" rel="noopener">WHATSAPP</a>
+        <a class="btn ghost" href="https://www.instagram.com/_physicalwealth/" target="_blank" rel="noopener"><svg class="ig" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.3" cy="6.7" r="1"/></svg>INSTAGRAM</a>
+        <a class="btn ghost" href="mailto:carlosfloresdiaz44@gmail.com">CORREO</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <a href="https://wa.me/525573316238" target="_blank" rel="noopener">WHATSAPP · 55 7331 6238</a>
+  <span class="sep" aria-hidden="true">·</span>
+  <a href="mailto:carlosfloresdiaz44@gmail.com">carlosfloresdiaz44@gmail.com</a>
+  <span class="sep" aria-hidden="true">·</span>
+  <a href="https://www.instagram.com/_physicalwealth/" target="_blank" rel="noopener">INSTAGRAM · @_physicalwealth</a>
+  <span class="sep" aria-hidden="true">·</span>
+  <button type="button" class="link" id="privacyBtn">AVISO DE PRIVACIDAD</button>
+  <span class="sep" aria-hidden="true">·</span>
+  <strong>© <span id="year">2026</span> CARLOS F. DÍAZ</strong>
+</footer>
+
+<!-- ============ MENÚ ORGANIZADO (botón ••• MENÚ) ============ -->
+<nav class="mega" id="mega" aria-label="Menú de la página" hidden>
+  <div class="mega-backdrop" data-mega-close></div>
+  <div class="mega-panel">
+    <div class="mega-head"><p class="mini">¿A DÓNDE QUIERES IR?</p><button type="button" class="bot-icon" data-mega-close aria-label="Cerrar menú">×</button></div>
+    <div class="mega-grid">
+      <div class="mega-col" style="--c:#8ddaff">
+        <b>Conóceme</b>
+        <a href="#sobre-mi">Mi historia</a>
+        <a href="#testimonios">Testimonios</a>
+        <a href="#contacto">Así trabajo contigo</a>
+      </div>
+      <div class="mega-col" style="--c:#4f9bff">
+        <b>Estrategia · Seguros de vida</b>
+        <a href="#estrategia">Planes y opciones</a>
+        <a href="#realidad"><i>1</i>La realidad en México</a>
+        <a href="#familia"><i>2</i>¿Quién cuenta contigo?</a>
+        <a href="#proteccion" data-tab="tab-fam"><i>3</i>Calculadora de protección familiar</a>
+        <a href="#proteccion" data-tab="tab-retiro"><i>4</i>Calculadora de retiro (PPR)</a>
+        <a href="#mitos"><i>5</i>Mitos vs. realidad</a>
+      </div>
+      <div class="mega-col" style="--c:#ff5a78">
+        <b>Rehabilitación</b>
+        <a href="#rehabilitacion">Servicios y reserva de cita</a>
+        <a href="#mapa">¿Dónde te duele?</a>
+      </div>
+      <div class="mega-col" style="--c:#e8c67a">
+        <b>Bienestar · Immunotec</b>
+        <a href="#bienestar">Productos y precios</a>
+        <a href="#quiz">¿Qué Immunocal es para ti?</a>
+      </div>
+    </div>
+    <a href="https://wa.me/525573316238" class="btn primary mega-wa" data-wa="Hola Carlos, vi tu página y me gustaría más información." target="_blank" rel="noopener">ESCRÍBEME POR WHATSAPP <span aria-hidden="true">→</span></a>
+  </div>
+</nav>
+
+<!-- ============ ASISTENTE VIRTUAL ============ -->
+<button class="bot-fab" id="botFab" type="button" aria-label="Escríbeme: asistente y WhatsApp" aria-expanded="false" aria-controls="bot">
+  <span class="bot-orb photo" aria-hidden="true"><img src="assets/avatar-asistente.jpg" alt=""></span>
+  <span class="wa-badge" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 11.5a8.5 8.5 0 0 1-12.6 7.4L3.5 20l1.2-3.7A8.5 8.5 0 1 1 20 11.5z"/><path class="fill" d="M9.2 8.6c.3-.6.6-.6.9-.6h.5c.2 0 .4 0 .6.5l.7 1.6c.1.2.1.4 0 .6l-.5.7c-.1.2-.1.3 0 .5.5.9 1.3 1.7 2.2 2.2.2.1.3.1.5 0l.7-.5c.2-.1.4-.1.6 0l1.5.7c.4.2.5.4.5.6 0 .6-.3 1.3-.9 1.6-.6.3-1.4.4-2.3.1-2.3-.8-4.2-2.7-5-5-.3-.9-.2-1.8.1-2.4z"/></svg></span>
+  <span class="bot-teaser" id="botTeaser">¿Te ayudo a elegir?</span>
+</button>
+<section class="bot" id="bot" role="dialog" aria-label="Asistente de Carlos" hidden>
+  <header class="bot-head">
+    <span class="bot-orb small photo" aria-hidden="true"><img src="assets/avatar-asistente.jpg" alt=""></span>
+    <div><b>Asistente de Carlos</b><small data-avail-short>Respuestas automáticas</small></div>
+    <button type="button" class="bot-icon" id="botRestart" aria-label="Empezar de nuevo" title="Empezar de nuevo">↻</button>
+    <button type="button" class="bot-icon" id="botClose" aria-label="Cerrar asistente">×</button>
+  </header>
+  <a href="https://wa.me/525573316238" class="bot-direct" data-wa="Hola Carlos, vi tu página y me gustaría más información." target="_blank" rel="noopener">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11.5a8.5 8.5 0 0 1-12.6 7.4L3.5 20l1.2-3.7A8.5 8.5 0 1 1 20 11.5z"/></svg>
+    <span>¿Prefieres escribirme directo? <b>Abrir WhatsApp</b></span><i aria-hidden="true">→</i>
+  </a>
+  <div class="bot-log" id="botLog" aria-live="polite"></div>
+  <div class="bot-opts" id="botOpts"></div>
+  <form class="bot-input" id="botForm" hidden>
+    <label for="botName" class="sr-only">Tu nombre</label>
+    <input id="botName" type="text" autocomplete="given-name" placeholder="Escribe tu nombre">
+    <button type="submit" aria-label="Enviar">→</button>
+  </form>
+</section>
+
+<div class="modal" id="modal" hidden>
+  <div class="backdrop" data-close></div>
+  <section class="panel" role="dialog" aria-modal="true" aria-labelledby="panelTitle" tabindex="-1">
+    <button class="close" type="button" data-close aria-label="Cerrar">×</button>
+    <div id="panelContent"></div>
+  </section>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
