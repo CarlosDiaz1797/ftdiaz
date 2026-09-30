@@ -322,7 +322,7 @@ const BACK = {
   rehab: { acc: '#ff5a78', tag: 'CLÍNICA DE FISIOTERAPIA', title: 'Rehabilitación',
     items: ['Valoración personalizada de tu caso', 'Lesiones deportivas y postquirúrgicas', 'Aparta tu cita por $150'],
     action: `<a class="btn primary" href="https://calendar.app.google/JmoM3sEjhGuNkshaA" target="_blank" rel="noopener">ELEGIR HORARIO <span aria-hidden="true">→</span></a>` },
-  strategy: { acc: '#4f9bff', tag: 'SEGUROS DE VIDA', title: 'Estrategia',
+  strategy: { acc: '#a2a6ac', tag: 'SEGUROS DE VIDA', title: 'Estrategia',
     items: ['Seguros de vida y plan de retiro (PPR)', 'Patrimonio y educación de tus hijos', 'Gastos médicos mayores'],
     action: `<button class="btn primary" type="button" data-open="strategy" data-goto="asesoria-panel">AGENDAR ASESORÍA <span aria-hidden="true">→</span></button>` },
   wellness: { acc: '#e8c67a', tag: 'IMMUNOTEC', title: 'Bienestar',
@@ -791,15 +791,15 @@ document.addEventListener('keydown', e => {
         const ex = m.x - m.vx * 14, ey = m.y - m.vy * 14;
         const g = ctx.createLinearGradient(m.x, m.y, ex, ey);
         g.addColorStop(0, `rgba(255,255,255,${k})`);
-        g.addColorStop(1, 'rgba(160,210,255,0)');
+        g.addColorStop(1, 'rgba(205,208,210,0)');
         ctx.globalAlpha = 1; ctx.strokeStyle = g; ctx.lineWidth = 1.6; ctx.lineCap = 'round';
         ctx.beginPath(); ctx.moveTo(m.x, m.y); ctx.lineTo(ex, ey); ctx.stroke();
       }
     }
     if (warp > 0.03) {                   // resplandor azul en el centro durante el salto
       const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, Math.max(W, H) * 0.6);
-      g.addColorStop(0, `rgba(140,200,255,${0.22 * warp})`);
-      g.addColorStop(1, 'rgba(40,90,255,0)');
+      g.addColorStop(0, `rgba(194,198,201,${0.22 * warp})`);
+      g.addColorStop(1, 'rgba(141,144,154,0)');
       ctx.globalAlpha = 1; ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
     }
     ctx.globalAlpha = 1;
@@ -1021,7 +1021,7 @@ document.addEventListener('keydown', e => {
   const svg = $('#famiSvg');
   if (!svg) return;
   const CX = 350, CY = 190, MAX = 8;
-  const COLORS = { Pareja: '#ff7a9c', Hijo: '#8ddaff', Hija: '#8ddaff', 'Mamá': '#e8c67a', 'Papá': '#e8c67a', Otro: '#b9a3ff' };
+  const COLORS = { Pareja: '#ff7a9c', Hijo: '#c3c7c9', Hija: '#c3c7c9', 'Mamá': '#e8c67a', 'Papá': '#e8c67a', Otro: '#d0ced4' };
   window.famNames = [];
   // estrellitas de fondo
   let bg = '';
@@ -1115,7 +1115,7 @@ document.addEventListener('keydown', e => {
   const money = n => '$' + Math.round(n).toLocaleString('es-MX');
   let hijos = 2;
   const PARTS = [
-    { k: 'ingreso', label: 'Ingreso para tu familia', c: '#3f8ce8' },
+    { k: 'ingreso', label: 'Ingreso para tu familia', c: '#8e9399' },
     { k: 'deudas', label: 'Liquidar deudas', c: '#c9577a' },
     { k: 'edu', label: 'Educación de tus hijos', c: '#a8843a' }
   ];
