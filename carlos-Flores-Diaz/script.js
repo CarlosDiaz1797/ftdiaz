@@ -365,6 +365,7 @@ deck.addEventListener('click', e => {
 // Inclinación 3D de la tarjeta del centro siguiendo el mouse
 let tiltCard = null, tiltR = null;
 deck.addEventListener('pointermove', e => {
+  if (deck.classList.contains('orbit')) return;
   if (e.pointerType !== 'mouse' || startX !== null) return;
   const card = e.target.closest('.card[data-pos="center"]');
   if (card !== tiltCard) {
@@ -1774,4 +1775,87 @@ const PAGO_NOMBRES = {
   addEventListener('scroll', () => { if (!raf) raf = requestAnimationFrame(update); }, { passive: true });
   document.addEventListener('layoutmeasured', measure);
   measure();
+})();
+
+/* =========================================================
+   ÓRBITA 3D: las tarjetas giran en círculo alrededor del emblema
+   ========================================================= */
+(function orbit() {
+  if (!deck) return;
+  deck.classList.add('orbit');
+  const core = $('.orbit-core', deck), path = $('.orbit-path', deck);
+  const STEP = 360 / N;
+  let rot = active, tgt = active, raf = null, geo = null, lastT = 0;
+  let tx = 0, ty = 0, cx = 0, cy = 0, deckR = null;   // inclinación suave de la tarjeta del frente
+  function measure() {
+    const W = deck.clientWidth, c = cards[0];
+    const cw = c.offsetWidth, ch = c.offsetHeight;
+    const phone = W < 701;
+    const R = phone ? W * 0.30 : Math.min(W * 0.36, 580);
+    const lift = ch * (phone ? 0.10 : 0.10);            // las tarjetas bajan un poco para dejar ver el emblema
+    geo = { W, cw, ch, R, ringY: ch * 0.5 + 6 + lift, lift, phone };
+    path.style.width = path.style.height = (2 * R) + 'px';
+    path.style.transform = `translate(-50%,-50%) translate3d(0, ${geo.ringY}px, ${-R}px) rotateX(90deg)`;
+    const coreW = phone ? Math.min(W * 0.15, 60) : Math.min(ch * 0.30, 130);
+    core.style.setProperty('--core-w', coreW + 'px');
+    // el emblema queda justo encima del borde superior de la tarjeta del frente
+    const cs = getComputedStyle(deck), Hd = deck.clientHeight;
+    const P = parseFloat(cs.perspective) || 1600;
+    const oy = (parseFloat(cs.perspectiveOrigin.split(' ')[1]) || 0) - Hd / 2;   // origen de la cámara respecto al centro
+    const s = P / (P + R);
+    const wantBottom = -ch / 2 + lift - (phone ? 4 : 10);
+    const coreY = oy + (wantBottom - oy) / s;
+    core.style.transform = `translate(-50%, -100%) translate3d(0, ${coreY.toFixed(1)}px, ${-R}px)`;
+  }
+  function frame(now) {
+    raf = null;
+    now = now || performance.now();
+    const dt = lastT ? Math.min(0.1, (now - lastT) / 1000) : 1 / 60;   // segundos desde el cuadro anterior
+    lastT = now;
+    const kRot = 1 - Math.exp(-dt / 0.17), kTilt = 1 - Math.exp(-dt / 0.12);   // mismo ritmo en cualquier equipo
+    if (!geo) measure();
+    const dx = parseFloat(deck.style.getPropertyValue('--dx')) || 0;
+    const drag = deck.classList.contains('dragging') ? -dx / (geo.W * 0.45) : 0;
+    rot += (tgt - rot) * kRot;
+    if (Math.abs(tgt - rot) < 0.002) rot = tgt;
+    cx += (tx - cx) * kTilt; cy += (ty - cy) * kTilt;
+    const tiltMoving = Math.abs(tx - cx) > 0.02 || Math.abs(ty - cy) > 0.02;
+    if (!tiltMoving) { cx = tx; cy = ty; }
+    const r = rot + drag;
+    cards.forEach((card, i) => {
+      const th = (i - r) * STEP * Math.PI / 180;
+      const x = geo.R * Math.sin(th), z = geo.R * Math.cos(th) - geo.R;
+      const d = (1 + Math.cos(th)) / 2;            // 1 = al frente, 0 = atrás
+      const ry = -Math.sin(th) * 24;
+      const tilt = d > 0.6 ? ` rotateX(${(cy * d).toFixed(2)}deg) rotateY(${(cx * d).toFixed(2)}deg)` : '';
+      card.style.transform = `translate(-50%,-50%) translate3d(${x.toFixed(1)}px, ${geo.lift.toFixed(1)}px, ${z.toFixed(1)}px) rotateY(${ry.toFixed(2)}deg)${tilt}`;
+      card.style.opacity = (0.45 + 0.55 * d).toFixed(3);
+      card.style.filter = d > 0.98 ? 'none' : `brightness(${(0.5 + 0.5 * d).toFixed(3)}) saturate(${(0.7 + 0.3 * d).toFixed(3)})`;
+      card.style.zIndex = String(Math.round(d * 10));
+    });
+    if (rot !== tgt || tiltMoving || deck.classList.contains('dragging')) raf = requestAnimationFrame(frame); else lastT = 0;
+  }
+  const kick = () => { if (!raf) raf = requestAnimationFrame(frame); };
+  const baseRender = render;
+  render = function () {
+    baseRender();
+    let diff = ((active - tgt) % N + N) % N;
+    if (diff > N / 2) diff -= N;
+    tgt += diff;
+    kick();
+  };
+  window.addEventListener('pointermove', () => { if (deck.classList.contains('dragging')) kick(); }, { passive: true });
+  deck.addEventListener('pointerenter', () => { deckR = deck.getBoundingClientRect(); });
+  deck.addEventListener('pointermove', e => {
+    if (e.pointerType !== 'mouse' || startX !== null) return;
+    if (!deckR) deckR = deck.getBoundingClientRect();
+    const x = (e.clientX - deckR.left) / deckR.width - 0.5, y = (e.clientY - deckR.top) / deckR.height - 0.5;
+    tx = Math.max(-1, Math.min(1, x * 2)) * 6; ty = -Math.max(-1, Math.min(1, y * 2)) * 4;
+    kick();
+  }, { passive: true });
+  deck.addEventListener('pointerleave', () => { tx = ty = 0; deckR = null; kick(); });
+  window.addEventListener('scroll', () => { deckR = null; }, { passive: true });
+  window.addEventListener('resize', () => { geo = null; kick(); });
+  if ('ResizeObserver' in window) new ResizeObserver(() => { geo = null; kick(); }).observe(deck);
+  measure(); kick();
 })();
