@@ -1567,3 +1567,12 @@ html.lite .core-ring.r2{ display:none }
 .deck.orbit .card,.deck.orbit.moving .card{ filter:none!important }
 .deck.orbit .card{ opacity:1!important }
 .deck.orbit .card .dim{ position:absolute; inset:0; z-index:12; background:#000; opacity:0; pointer-events:none; border-radius:inherit; will-change:opacity }
+
+/* Celular: menos carga gráfica en el carrusel */
+@media (max-width:700px){
+  .deck.orbit .card{ box-shadow:none }
+  .deck.orbit .card::after{ box-shadow:inset 0 0 18px 8px rgba(0,0,0,.8) }
+  .core-logo{ filter:none }
+  .core-halo{ inset:-20% }
+}
+.deck.orbit .card .visual{ transition:none; transform:none!important }

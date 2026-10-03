@@ -300,6 +300,7 @@ window.addEventListener('pointermove', e => {
   if (dragged) {
     // las tarjetas siguen al dedo / mouse mientras arrastras (con un poco de resistencia)
     deck.classList.add('dragging');
+    if (deck.classList.contains('orbit')) { window.__deckDx = dx; return; }   // la órbita lee el valor directo, sin recalcular estilos
     const limit = deck.clientWidth * 0.35;
     const eased = Math.sign(dx) * Math.min(Math.abs(dx) * 0.6, limit);
     deck.style.setProperty('--dx', `${eased.toFixed(1)}px`);
@@ -310,7 +311,7 @@ function endDrag(e) {
   const dx = e && e.clientX != null ? e.clientX - startX : 0;
   startX = null;
   deck.classList.remove('dragging');
-  deck.style.setProperty('--dx', '0px');
+  if (!deck.classList.contains('orbit')) deck.style.setProperty('--dx', '0px');
   if (Math.abs(dx) > SWIPE) move(dx < 0 ? 1 : -1);
   userTouched();
 }
@@ -812,6 +813,7 @@ document.addEventListener('keydown', e => {
     requestAnimationFrame(tt => frame(tt, id));
     // en modo ligero se dibuja a ~30 cuadros por segundo (la mitad de trabajo)
     if (LITE && last && t - last < 30) return;
+    if (LITE && window.__orbitBusy) return;   // en celular, las estrellas ceden el turno mientras gira el carrusel
     const dt = last ? Math.min((t - last) / 16.67, 3) : 1;
     last = t;
     draw(t, dt);
@@ -1786,7 +1788,8 @@ const PAGO_NOMBRES = {
   const core = $('.orbit-core', deck), path = $('.orbit-path', deck);
   const dims = cards.map(card => { const d = document.createElement('div'); d.className = 'dim'; d.setAttribute('aria-hidden', 'true'); card.appendChild(d); card.style.opacity = '1'; return d; });
   const STEP = 360 / N;
-  let rot = active, tgt = active, raf = null, geo = null, lastT = 0;
+  let rot = active, tgt = active, raf = null, geo = null, lastT = 0, lastDrag = 0;
+  const lastZ = cards.map(() => ''), lastDim = cards.map(() => '');
   let tx = 0, ty = 0, cx = 0, cy = 0, deckR = null;   // inclinación suave de la tarjeta del frente
   function measure() {
     const W = deck.clientWidth, c = cards[0];
@@ -1815,8 +1818,16 @@ const PAGO_NOMBRES = {
     lastT = now;
     const kRot = 1 - Math.exp(-dt / 0.17), kTilt = 1 - Math.exp(-dt / 0.12);   // mismo ritmo en cualquier equipo
     if (!geo) measure();
-    const dx = parseFloat(deck.style.getPropertyValue('--dx')) || 0;
-    const drag = deck.classList.contains('dragging') ? -dx / (geo.W * 0.45) : 0;
+    const isDragging = deck.classList.contains('dragging');
+    let drag = 0;
+    if (isDragging) {
+      const lim = geo.W * 0.6, dx = Math.max(-lim, Math.min(lim, window.__deckDx || 0));
+      drag = -dx / (geo.W * 0.75);
+      lastDrag = drag;
+    } else if (lastDrag) {
+      rot += lastDrag;          // al soltar, el giro continúa desde donde quedó el dedo (sin brinco)
+      lastDrag = 0; window.__deckDx = 0;
+    }
     rot += (tgt - rot) * kRot;
     if (Math.abs(tgt - rot) < 0.002) rot = tgt;
     cx += (tx - cx) * kTilt; cy += (ty - cy) * kTilt;
@@ -1829,12 +1840,15 @@ const PAGO_NOMBRES = {
       const d = (1 + Math.cos(th)) / 2;            // 1 = al frente, 0 = atrás
       const ry = -Math.sin(th) * 24;
       const tilt = d > 0.6 ? ` rotateX(${(cy * d).toFixed(2)}deg) rotateY(${(cx * d).toFixed(2)}deg)` : '';
-      card.style.transform = `translate(-50%,-50%) translate3d(${x.toFixed(1)}px, ${geo.lift.toFixed(1)}px, ${z.toFixed(1)}px) rotateY(${ry.toFixed(2)}deg)${tilt}`;
+      card.style.transform = `translate(-50%,-50%) translate3d(${x.toFixed(1)}px, ${geo.lift.toFixed(1)}px, ${z.toFixed(1)}px) rotateY(${ry.toFixed(1)}deg)${tilt}`;
       // las de atrás se oscurecen con una capa negra encima (ligero, y no se traslucen entre sí)
-      dims[i].style.opacity = (0.78 * (1 - d * d)).toFixed(3);
-      card.style.zIndex = String(Math.round(d * 10));
+      const dm = (0.78 * (1 - d * d)).toFixed(2), zi = String(Math.round(d * 10));
+      if (dm !== lastDim[i]) { dims[i].style.opacity = dm; lastDim[i] = dm; }
+      if (zi !== lastZ[i]) { card.style.zIndex = zi; lastZ[i] = zi; }
     });
-    if (rot !== tgt || tiltMoving || deck.classList.contains('dragging')) raf = requestAnimationFrame(frame); else lastT = 0;
+    const busy = rot !== tgt || tiltMoving || isDragging;
+    window.__orbitBusy = rot !== tgt || isDragging;
+    if (busy) raf = requestAnimationFrame(frame); else lastT = 0;
   }
   const kick = () => { if (!raf) raf = requestAnimationFrame(frame); };
   const baseRender = render;
