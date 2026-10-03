@@ -1784,6 +1784,7 @@ const PAGO_NOMBRES = {
   if (!deck) return;
   deck.classList.add('orbit');
   const core = $('.orbit-core', deck), path = $('.orbit-path', deck);
+  const dims = cards.map(card => { const d = document.createElement('div'); d.className = 'dim'; d.setAttribute('aria-hidden', 'true'); card.appendChild(d); card.style.opacity = '1'; return d; });
   const STEP = 360 / N;
   let rot = active, tgt = active, raf = null, geo = null, lastT = 0;
   let tx = 0, ty = 0, cx = 0, cy = 0, deckR = null;   // inclinación suave de la tarjeta del frente
@@ -1829,8 +1830,8 @@ const PAGO_NOMBRES = {
       const ry = -Math.sin(th) * 24;
       const tilt = d > 0.6 ? ` rotateX(${(cy * d).toFixed(2)}deg) rotateY(${(cx * d).toFixed(2)}deg)` : '';
       card.style.transform = `translate(-50%,-50%) translate3d(${x.toFixed(1)}px, ${geo.lift.toFixed(1)}px, ${z.toFixed(1)}px) rotateY(${ry.toFixed(2)}deg)${tilt}`;
-      card.style.opacity = (0.45 + 0.55 * d).toFixed(3);
-      card.style.filter = d > 0.98 ? 'none' : `brightness(${(0.5 + 0.5 * d).toFixed(3)}) saturate(${(0.7 + 0.3 * d).toFixed(3)})`;
+      // las de atrás se oscurecen con una capa negra encima (ligero, y no se traslucen entre sí)
+      dims[i].style.opacity = (0.78 * (1 - d * d)).toFixed(3);
       card.style.zIndex = String(Math.round(d * 10));
     });
     if (rot !== tgt || tiltMoving || deck.classList.contains('dragging')) raf = requestAnimationFrame(frame); else lastT = 0;

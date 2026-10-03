@@ -1562,3 +1562,8 @@ html.lite .core-ring.r2{ display:none }
 .snav .progress i{ background:linear-gradient(90deg,#f7dc95,#c9982f)!important; box-shadow:0 0 8px rgba(233,196,106,.7)!important }
 .bot-orb::before{ background:conic-gradient(#f7dc95, transparent 40%, #c9982f 65%, transparent 85%, #f7dc95)!important }
 .tile::before,.product::before{ background:conic-gradient(from 0deg, transparent 0 55%, #f7dc95 68%, #e9c46a 76%, #c9982f 86%, transparent 94%)!important }
+
+/* Celular fluido: sin filtros que se recalculan al girar */
+.deck.orbit .card,.deck.orbit.moving .card{ filter:none!important }
+.deck.orbit .card{ opacity:1!important }
+.deck.orbit .card .dim{ position:absolute; inset:0; z-index:12; background:#000; opacity:0; pointer-events:none; border-radius:inherit; will-change:opacity }
