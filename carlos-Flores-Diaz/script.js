@@ -959,14 +959,18 @@ document.addEventListener('keydown', e => {
       const px = x(i) / W * pt.width;
       tip.style.left = Math.min(pt.width - tip.offsetWidth - 4, Math.max(4, px - tip.offsetWidth / 2)) + 'px';
     };
-    hit.addEventListener('pointermove', show);
+    let showRaf = 0, showE = null;
+    const showSoon = e => { showE = e; if (!showRaf) showRaf = requestAnimationFrame(() => { showRaf = 0; show(showE); }); };   // máximo una vez por cuadro
+    hit.addEventListener('pointermove', showSoon);
     hit.addEventListener('pointerdown', show);
     hit.addEventListener('pointerleave', () => { tip.hidden = true; cross.setAttribute('x1', -10); cross.setAttribute('x2', -10); });
   }
   $('.calc-results').insertAdjacentHTML('afterend', '<div id="calc-note"></div>');
   NOTE_RENDERERS.push(calc);
-  edad.addEventListener('input', calc);
-  ahorro.addEventListener('input', calc);
+  let calcRaf = 0;
+  const calcSoon = () => { if (!calcRaf) calcRaf = requestAnimationFrame(() => { calcRaf = 0; calc(); }); };   // máximo un cálculo por cuadro
+  edad.addEventListener('input', calcSoon);
+  ahorro.addEventListener('input', calcSoon);
   calc();
 })();
 
@@ -1195,7 +1199,9 @@ document.addEventListener('keydown', e => {
 
   $i('wa').insertAdjacentHTML('beforebegin', '<div id="fam-note"></div>');
   NOTE_RENDERERS.push(calc);
-  ['ingreso', 'anos', 'deudas', 'ahorro'].forEach(id => $i(id).addEventListener('input', calc));
+  let calcRaf = 0;
+  const calcSoon = () => { if (!calcRaf) calcRaf = requestAnimationFrame(() => { calcRaf = 0; calc(); }); };   // máximo un cálculo por cuadro
+  ['ingreso', 'anos', 'deudas', 'ahorro'].forEach(id => $i(id).addEventListener('input', calcSoon));
   $i('menos').addEventListener('click', () => { hijos = Math.max(0, hijos - 1); calc(); });
   $i('mas').addEventListener('click', () => { hijos = Math.min(6, hijos + 1); calc(); });
   // tooltip de la barra
@@ -1881,4 +1887,61 @@ const PAGO_NOMBRES = {
   window.addEventListener('resize', () => { if (window.__skipResize) return; geo = null; kick(); });
   if ('ResizeObserver' in window) new ResizeObserver(() => { geo = null; kick(); }).observe(deck);
   measure(); kick();
+})();
+
+
+/* =========================================================
+   BARRAS DESLIZANTES EN PANTALLAS TÁCTILES
+   En un celular, la barra nativa atrapa el dedo: si al bajar la página el dedo cae sobre ella,
+   se mueve la barra en lugar de la página. Aquí la barra solo responde a un arrastre horizontal
+   (o a un toque), y cualquier movimiento vertical baja la página con normalidad.
+   ========================================================= */
+(function touchSliders() {
+  if (!TOUCH_DEVICE) return;
+  document.documentElement.classList.add('touch-sliders');
+  $$('.range').forEach(wrap => {
+    const inp = wrap.querySelector('input[type="range"]');
+    if (!inp) return;
+    let st = null;
+    const num = a => parseFloat(inp.getAttribute(a));
+    const setFromRatio = k => {
+      const min = num('min'), max = num('max'), step = num('step') || 1;
+      let v = min + Math.max(0, Math.min(1, k)) * (max - min);
+      v = Math.round((v - min) / step) * step + min;
+      v = Math.max(min, Math.min(max, v));
+      if (String(v) !== inp.value) { inp.value = v; inp.dispatchEvent(new Event('input', { bubbles: true })); }
+    };
+    const ratioOf = v => (v - num('min')) / (num('max') - num('min'));
+    wrap.addEventListener('pointerdown', e => {
+      if (e.pointerType === 'mouse' && e.button !== 0) return;
+      const r = inp.getBoundingClientRect();
+      if (Math.abs(e.clientY - (r.top + r.height / 2)) > 26) return;       // solo la franja de la barra
+      st = { id: e.pointerId, x0: e.clientX, y0: e.clientY, left: r.left, w: r.width, k0: ratioOf(parseFloat(inp.value)), active: false, sy: scrollY };
+      st.onThumb = Math.abs(e.clientX - (r.left + st.k0 * r.width)) < 30;
+    });
+    wrap.addEventListener('pointermove', e => {
+      if (!st || e.pointerId !== st.id) return;
+      const dx = e.clientX - st.x0, dy = e.clientY - st.y0;
+      if (!st.active) {
+        if (Math.abs(dx) < 6 || Math.abs(dx) < Math.abs(dy) * 1.2) return;  // todavía no es un arrastre horizontal claro
+        st.active = true;
+        try { wrap.setPointerCapture(st.id); } catch (err) {}
+      }
+      // desde el círculo: movimiento relativo; desde la línea: va a donde está el dedo
+      setFromRatio(st.onThumb ? st.k0 + dx / st.w : (e.clientX - st.left) / st.w);
+    });
+    const end = e => {
+      if (!st || (e && e.pointerId !== st.id)) return;
+      const s = st; st = null;
+      if (!e || e.type === 'pointercancel') return;                          // el navegador tomó el gesto para bajar la página
+      if (!s.active) {
+        // toque corto sin moverse ni bajar la página: la barra salta a ese punto
+        if (Math.abs(e.clientX - s.x0) < 8 && Math.abs(e.clientY - s.y0) < 8 && Math.abs(scrollY - s.sy) < 4) setFromRatio((e.clientX - s.left) / s.w);
+        else return;
+      }
+      inp.dispatchEvent(new Event('change', { bubbles: true }));
+    };
+    wrap.addEventListener('pointerup', end);
+    wrap.addEventListener('pointercancel', end);
+  });
 })();

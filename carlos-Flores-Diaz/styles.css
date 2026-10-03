@@ -1584,3 +1584,9 @@ html.lite .core-ring.r2{ display:none }
 html.lite .feature-media img, html.lite .about-photo img{ translate:none }
 html.lite .planet{ transform:none }
 html.lite .planet img{ rotate:none }
+
+/* Barras deslizantes en celular: el dedo puede bajar la página aunque caiga sobre una barra */
+.range, .range input{ touch-action:pan-y }
+html.touch-sliders .range input[type="range"]{ pointer-events:none }
+html.touch-sliders .range{ position:relative; cursor:pointer; -webkit-tap-highlight-color:transparent }
+html.touch-sliders .range input[type="range"]{ margin:10px 0 }
