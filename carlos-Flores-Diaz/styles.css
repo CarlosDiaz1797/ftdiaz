@@ -1576,3 +1576,11 @@ html.lite .core-ring.r2{ display:none }
   .core-halo{ inset:-20% }
 }
 .deck.orbit .card .visual{ transition:none; transform:none!important }
+
+/* Deslizar fluido en celular: sin filtros que se recalculan en capas que se mueven */
+#starfield{ filter:none!important }
+.planet{ filter:none!important }
+.planet img{ filter:grayscale(1) brightness(.5) contrast(1.15) }
+html.lite .feature-media img, html.lite .about-photo img{ translate:none }
+html.lite .planet{ transform:none }
+html.lite .planet img{ rotate:none }

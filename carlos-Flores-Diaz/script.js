@@ -128,6 +128,12 @@ const LITE_REASONS = [
   !!(navigator.connection && navigator.connection.saveData)
 ];
 let LITE = LITE_REASONS.some(Boolean);
+// En celulares, la barra de direcciones se esconde al deslizar y el navegador avisa "cambio de tamaño" aunque
+// el ancho sea el mismo. Ese aviso se ignora para no rehacer el fondo ni volver a medir toda la página.
+const TOUCH_DEVICE = matchMedia('(pointer: coarse)').matches;
+let __lastW = innerWidth;
+window.__skipResize = false;
+window.addEventListener('resize', () => { window.__skipResize = TOUCH_DEVICE && innerWidth === __lastW; __lastW = innerWidth; });
 if (LITE) document.documentElement.classList.add('lite');
 (function watchFps() {
   if (LITE || !window.requestAnimationFrame) return;
@@ -693,7 +699,7 @@ document.addEventListener('keydown', e => {
   if (!canvas || !canvas.getContext) return;
   const ctx = canvas.getContext('2d');
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const COLORS = ['255,255,255', '255,255,255', '190,230,255', '157,223,255', '240,200,240'];
+  const COLORS = ['255,255,255', '255,255,255', '255,244,214', '247,220,149', '232,232,232'];   // blancos y dorados
   let W = 0, H = 0, stars = [], shooters = [];
   let nextShoot = 2000, last = 0, running = false;
   let mx = 0, my = 0, tx = 0, ty = 0;   // posición del mouse (-1 a 1), suavizada
@@ -813,7 +819,7 @@ document.addEventListener('keydown', e => {
     requestAnimationFrame(tt => frame(tt, id));
     // en modo ligero se dibuja a ~30 cuadros por segundo (la mitad de trabajo)
     if (LITE && last && t - last < 30) return;
-    if (LITE && window.__orbitBusy) return;   // en celular, las estrellas ceden el turno mientras gira el carrusel
+    if (LITE && (window.__orbitBusy || t - (window.__scrollT || 0) < 160)) return;   // y también mientras deslizas   // en celular, las estrellas ceden el turno mientras gira el carrusel
     const dt = last ? Math.min((t - last) / 16.67, 3) : 1;
     last = t;
     draw(t, dt);
@@ -841,7 +847,7 @@ document.addEventListener('keydown', e => {
 
   document.addEventListener('pointerleave', () => { mpx = mpy = -9999; });
   let rt;
-  window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(resize, 150); });
+  window.addEventListener('resize', () => { if (window.__skipResize) return; clearTimeout(rt); rt = setTimeout(resize, 150); });
   resize();
   start();
 })();
@@ -1574,6 +1580,7 @@ function fillStatement(y) {
 }
 const planet = $('.planet');
 function onScroll() {
+  window.__scrollT = performance.now();
   if (ticking) return;
   ticking = true;
   requestAnimationFrame(() => {
@@ -1586,11 +1593,11 @@ function onScroll() {
     snav.classList.toggle('show', y > vh * 0.55);
     pickSection(y);
     // 5. el planeta viaja con el scroll (la variable va solo en el planeta, no en toda la página)
-    if (planet) planet.style.setProperty('--sp', k.toFixed(4));
+    if (planet && !LITE) planet.style.setProperty('--sp', k.toFixed(4));
     // 7. la frase gigante se llena de luz palabra por palabra
     fillStatement(y);
     // 8. las fotos se mueven más lento que el texto (profundidad)
-    if (!REDUCE) LAYOUT.depth.forEach(d => {
+    if (!REDUCE && !LITE) LAYOUT.depth.forEach(d => {
       const top = d.top - y;
       if (top + d.h < -100 || top > vh + 100) return;
       const off = Math.max(-28, Math.min(28, (top + d.h / 2 - vh / 2) * -0.09));
@@ -1600,8 +1607,9 @@ function onScroll() {
 }
 let measureTimer;
 function remeasure() { clearTimeout(measureTimer); measureTimer = setTimeout(() => { measureLayout(); onScroll(); }, 120); }
+function remeasureOnResize() { if (!window.__skipResize) remeasure(); }
 addEventListener('scroll', onScroll, { passive: true });
-addEventListener('resize', remeasure);
+addEventListener('resize', remeasureOnResize);
 addEventListener('load', remeasure);
 if ('ResizeObserver' in window) new ResizeObserver(remeasure).observe(document.body);
 document.fonts?.ready?.then(remeasure);
@@ -1870,7 +1878,7 @@ const PAGO_NOMBRES = {
   }, { passive: true });
   deck.addEventListener('pointerleave', () => { tx = ty = 0; deckR = null; kick(); });
   window.addEventListener('scroll', () => { deckR = null; }, { passive: true });
-  window.addEventListener('resize', () => { geo = null; kick(); });
+  window.addEventListener('resize', () => { if (window.__skipResize) return; geo = null; kick(); });
   if ('ResizeObserver' in window) new ResizeObserver(() => { geo = null; kick(); }).observe(deck);
   measure(); kick();
 })();
