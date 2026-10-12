@@ -1,0 +1,1012 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Centro de Prospección</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap">
+<style>
+[hidden]{display:none!important}
+
+/* Layout: bandeja de entrada — lo que encontró la búsqueda semanal, de lo más nuevo a lo más viejo; tú apruebas o descartas */
+:root{
+  /* Azul marino y dorado: siempre oscuro, como banca privada */
+  --paper:#0a1428; --surface:#11203c; --ink:#eef2f8; --muted:#a3b3cb; --line:#24385c;
+  --gold:#e4bf6c; --gold-fill:#e4bf6c; --bubble:#162b4d;
+  --good:#7fd3a5; --warn:#eab56b; --bad:#f2927f;
+  --display:'Playfair Display',Georgia,'Times New Roman',serif;
+  --body:Manrope,system-ui,-apple-system,'Segoe UI',sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.55}
+.wrap{max-width:980px;margin:0 auto;padding-inline:16px;padding-block:28px 48px;display:grid;gap:20px}
+header{display:grid;gap:8px;border-bottom:1px solid var(--line);padding-bottom:16px}
+.eyebrow{margin:0;font-size:12px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;color:var(--gold)}
+h1{margin:0;font-family:var(--display);font-weight:700;font-size:clamp(28px,4vw,40px);line-height:1.1;text-wrap:balance}
+.lead{margin:0;color:var(--muted);max-width:640px}
+.last{font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+.bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}
+.seg{display:inline-flex;gap:4px;padding:4px;border:1px solid var(--line);border-radius:999px;background:var(--surface);flex-wrap:wrap}
+.seg button{border:0;background:none;color:var(--muted);font:600 14px var(--body);padding:7px 14px;border-radius:999px;cursor:pointer;font-variant-numeric:tabular-nums}
+.seg button[aria-pressed="true"]{background:var(--gold-fill);color:#1a1206}
+button:focus-visible,a:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.list{display:grid;gap:12px}
+.item{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px 18px;display:grid;gap:10px;min-width:0}
+.item[data-estado="aprobada"]{border-left:3px solid var(--good)}
+.item[data-estado="descartada"]{opacity:.7}
+.top{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.pill{font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:4px 9px;border-radius:999px;border:1px solid var(--line);color:var(--muted)}
+.pill.tipo{color:var(--gold);border-color:currentColor}
+.pill.ok{color:var(--good);border-color:currentColor}
+.pill.no{color:var(--bad);border-color:currentColor}
+.date{margin-left:auto;font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+.name{margin:0;font-family:var(--display);font-size:20px;font-weight:700;overflow-wrap:anywhere}
+.sum{margin:0;overflow-wrap:anywhere}
+.where{margin:0;font-size:13.5px;color:var(--muted);overflow-wrap:anywhere}
+.where a{color:var(--gold);font-weight:600}
+.actions{display:flex;flex-wrap:wrap;gap:8px}
+.btn{cursor:pointer;border-radius:999px;font:700 13.5px var(--body);padding:8px 16px;border:1px solid var(--line);background:transparent;color:var(--ink)}
+.btn.primary{background:linear-gradient(180deg,#f4d892,#cfa143);border-color:transparent;color:#1a1206}
+.btn.good{border-color:var(--good);color:var(--good)}
+.btn:disabled{opacity:.55;cursor:default}
+.draft{background:var(--bubble);border:1px solid var(--line);border-radius:4px 14px 14px 14px;padding:12px 14px;white-space:pre-wrap}
+.empty{background:var(--surface);border:1px dashed var(--line);border-radius:14px;padding:24px;display:grid;gap:6px;color:var(--muted)}
+.empty b{color:var(--ink);font-family:var(--display);font-size:19px}
+.status{font-size:13px;color:var(--muted)}
+
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.55}
+.a-wrap{max-width:1120px;margin:0 auto;padding-inline:16px;padding-block:28px 48px;display:grid;gap:22px}
+.a-header{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px;border-bottom:1px solid var(--line);padding-bottom:16px}
+.eyebrow{margin:0;font-size:12px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;color:var(--gold)}
+h1{margin:4px 0 0;font-family:var(--display);font-weight:700;font-size:clamp(28px,4vw,40px);line-height:1.1;text-wrap:balance}
+.rules{margin:0;font-size:13px;color:var(--muted);max-width:420px}
+
+.modes{display:inline-flex;gap:4px;padding:4px;border:1px solid var(--line);border-radius:999px;background:var(--surface);flex-wrap:wrap}
+.modes button{border:0;background:none;color:var(--muted);font:600 14px var(--body);padding:8px 16px;border-radius:999px;cursor:pointer}
+.modes button[aria-pressed="true"]{background:var(--gold-fill);color:#1a1206}
+.modes button:focus-visible,.btn:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+
+.grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:22px;align-items:start}
+@media (max-width:820px){.grid{grid-template-columns:1fr}}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:20px;display:grid;gap:14px;min-width:0}
+.panel h2{margin:0;font-family:var(--display);font-size:21px;font-weight:700}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:480px){.row{grid-template-columns:1fr}}
+label{display:grid;gap:6px;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);min-width:0}
+input,select,textarea{font:500 15px var(--body);color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:10px 12px;width:100%;text-transform:none;letter-spacing:0}
+textarea{min-height:110px;resize:vertical;line-height:1.5}
+.hint{font-size:12.5px;color:var(--muted);margin:-6px 0 0;text-transform:none;letter-spacing:0;font-weight:500}
+.check{display:flex;align-items:center;gap:10px;text-transform:none;letter-spacing:0;font-size:14px;font-weight:600;color:var(--ink)}
+.check input{width:18px;height:18px;accent-color:var(--gold)}
+.actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.btn{cursor:pointer;border-radius:999px;font:700 14px var(--body);letter-spacing:.04em;padding:11px 20px;border:1px solid var(--gold);background:transparent;color:var(--ink)}
+.btn.primary{background:linear-gradient(180deg,#f4d892,#cfa143);border-color:transparent;color:#1a1206;box-shadow:inset 0 1px 0 rgba(255,255,255,.5),0 2px 6px rgba(0,0,0,.18)}
+.btn:disabled{opacity:.55;cursor:default}
+.status{font-size:13px;color:var(--muted)}
+
+.out-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:10px}
+.pill{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:5px 10px;border-radius:999px;border:1px solid var(--line);color:var(--muted)}
+.pill.example{border-style:dashed}
+.pill.good{color:var(--good);border-color:currentColor}
+.pill.warn{color:var(--warn);border-color:currentColor}
+.pill.bad{color:var(--bad);border-color:currentColor}
+.bubble{background:var(--bubble);border:1px solid var(--line);border-radius:4px 16px 16px 16px;padding:16px 18px;white-space:pre-wrap;font-size:15.5px;line-height:1.6;min-height:90px}
+.meta{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+.block{border-top:1px solid var(--line);padding-top:14px;display:grid;gap:8px}
+.block h3{margin:0;font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--gold)}
+.stage{font-family:var(--display);font-size:19px;font-weight:700}
+dl{margin:0;display:grid;grid-template-columns:minmax(120px,auto) 1fr;gap:6px 14px;font-size:14px}
+dt{color:var(--muted)} dd{margin:0;min-width:0;overflow-wrap:anywhere}
+ul.notes{margin:0;padding-left:18px;display:grid;gap:4px;font-size:14px}
+pre.cal{margin:0;background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:12px 14px;white-space:pre-wrap;font:500 13.5px/1.55 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;overflow-x:auto}
+.stop{border-color:var(--line)}
+.note-off{font-size:13.5px;color:var(--muted);border:1px dashed var(--line);border-radius:10px;padding:10px 12px}
+@media (prefers-reduced-motion:no-preference){.bubble.fresh{animation:in .35s ease}}
+@keyframes in{from{opacity:.4;transform:translateY(4px)}to{opacity:1;transform:none}}
+
+
+.tabs{display:flex;flex-wrap:wrap;gap:6px;border-bottom:1px solid var(--line);padding-bottom:10px}
+.tabs button{border:1px solid var(--line);background:var(--surface);color:var(--muted);font:700 14px var(--body);padding:9px 16px;border-radius:999px;cursor:pointer}
+.tabs button[aria-selected="true"]{background:var(--gold-fill);border-color:transparent;color:#1a1206}
+.tabpanel{display:grid;gap:18px}
+.a-wrap,.a-header{display:contents}
+.cap-grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:22px;align-items:start}
+@media (max-width:820px){.cap-grid{grid-template-columns:1fr}}
+.cap-col{display:grid;gap:12px;min-width:0}
+h2.sec{margin:6px 0 0;font-family:var(--display);font-size:21px}
+.flow,.checklist{margin:0;padding-left:20px;display:grid;gap:8px}
+.flow b,.checklist b{color:var(--ink)}
+code{font:500 13px ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:1px 6px;overflow-wrap:anywhere}
+.linkrow{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.lr-text{display:grid;gap:2px;min-width:0;flex:1 1 240px}
+.lr-text span{font-size:13px;color:var(--muted)}
+.qr{width:100%;max-width:340px;height:auto;border-radius:14px;border:1px solid var(--line)}
+.note{margin:0;font-size:13.5px;color:var(--muted)}
+.res-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}
+.res{display:grid;gap:6px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px 18px;color:var(--ink);text-decoration:none}
+a.res:hover{border-color:var(--gold)}
+.res b{font-family:var(--display);font-size:19px}
+.res span{font-size:14px;color:var(--muted)}
+
+.calc-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:22px;align-items:start}
+@media (max-width:820px){.calc-grid{grid-template-columns:1fr}}
+.nc-total{margin:0;font:700 clamp(34px,5vw,48px)/1.1 var(--display);color:var(--gold);font-variant-numeric:tabular-nums}
+.nc-bar{display:flex;height:16px;border-radius:999px;overflow:hidden;background:var(--paper);border:1px solid var(--line)}
+.nc-bar span{display:block;height:100%}
+.nc-legend{display:grid;grid-template-columns:auto 1fr auto;gap:6px 10px;align-items:center;margin:0;font-size:14px;font-variant-numeric:tabular-nums}
+.nc-legend i{width:12px;height:12px;border-radius:3px;display:inline-block}
+.nc-legend dd{margin:0;text-align:right;font-weight:700}
+.nc-legend dt{color:var(--muted)}
+
+.kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+@media (max-width:480px){.kpis{grid-template-columns:1fr}}
+.kpis div{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:10px 12px;display:grid;gap:2px;min-width:0}
+.kpis small{font-size:12px;color:var(--muted)}
+.kpis b{font:700 16px/1.25 var(--body);font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.kpis .hl{border-color:var(--gold)}
+.kpis .hl b{color:var(--gold)}
+.chart{width:100%;height:auto;display:block}
+.legend-line{margin:0;display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;font-size:13px;color:var(--muted)}
+.legend-line .sw{display:inline-block;width:14px;height:3px;border-radius:2px;margin-right:-8px}
+.legend-line .sw.gold{background:var(--gold)} .legend-line .sw.grey{background:var(--muted)}
+.cmodes{display:inline-flex;gap:4px;padding:4px;border:1px solid var(--line);border-radius:999px;background:var(--surface);flex-wrap:wrap;justify-self:start}
+.cmodes button{border:0;background:none;color:var(--muted);font:600 14px var(--body);padding:8px 16px;border-radius:999px;cursor:pointer}
+.cmodes button[aria-pressed="true"]{background:var(--gold-fill);color:#1a1206}
+
+.cliente{max-width:420px}
+.search{font:500 15px var(--body);color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:9px 14px;min-width:0;flex:1 1 200px;max-width:320px}
+.reg pre{margin:0;background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:10px 12px;white-space:pre-wrap;font:500 13.5px/1.55 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;overflow-x:auto}
+.imgmodal{position:fixed;inset:0;z-index:50;background:rgba(3,8,18,.78);display:grid;place-items:center;padding:16px}
+.imgbox{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px;display:grid;gap:12px;max-width:520px;width:100%;max-height:100%;overflow:auto}
+.imghead{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.imghead b{font-family:var(--display);font-size:20px}
+#img-prev{width:100%;height:auto;border-radius:10px;border:1px solid var(--line);background:#fff}
+
+/* ===== Celular: navegación abajo como app, campos sin zoom, botones cómodos ===== */
+.peek,.see-msg,.t-short{display:none}
+@media (max-width:700px){
+  body{padding-bottom:calc(86px + env(safe-area-inset-bottom, 0px))}
+  .wrap{padding-block:18px 24px;gap:16px}
+  .lead{display:none}
+  h1{font-size:28px}
+  header{padding-bottom:10px}
+  .tabs{position:fixed;left:0;right:0;bottom:0;z-index:30;margin:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;
+    padding:8px 10px calc(8px + env(safe-area-inset-bottom, 0px));background:var(--surface);border-top:1px solid var(--line);border-bottom:0;box-shadow:0 -8px 24px rgba(0,0,0,.35)}
+  .tabs button{border-radius:12px;padding:12px 4px;font-size:12.5px;min-height:46px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  input,select,textarea,.search{font-size:16px!important}
+  .modes,.cmodes{display:grid;width:100%;grid-template-columns:repeat(3,minmax(0,1fr));border-radius:16px}
+  .cmodes{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .modes button,.cmodes button,.seg button{min-height:42px;border-radius:12px;padding:8px 6px}
+  .seg{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);width:100%;border-radius:14px}
+  .seg button{font-size:12.5px;white-space:nowrap}
+  .seg[aria-label="Estado"]{grid-auto-flow:row;grid-template-columns:repeat(2,minmax(0,1fr))}
+  .bar{gap:8px}
+  .t-long{display:none}
+  .btn{min-height:44px}
+  .actions .btn,.block .btn{flex:1 1 auto}
+  .t-short{display:inline}
+  .see-msg{display:inline-flex;align-items:center;justify-content:center;text-decoration:none}
+  .peek{display:flex;position:sticky;top:env(safe-area-inset-top, 0px);z-index:20;justify-content:space-between;align-items:center;gap:10px;
+    background:var(--surface);border:1px solid var(--gold);border-radius:14px;padding:10px 14px;box-shadow:0 8px 20px rgba(0,0,0,.35)}
+  .peek span{font-size:13px;color:var(--muted)}
+  .peek b{font:700 20px var(--display);color:var(--gold);font-variant-numeric:tabular-nums}
+  .imgmodal{align-items:end;padding:0}
+  .imgbox{border-radius:18px 18px 0 0;max-height:92vh;padding-bottom:calc(16px + env(safe-area-inset-bottom, 0px))}
+  .imgbox .actions .btn{flex:1 1 100%}
+  .kpis b{font-size:18px}
+}
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>Centro de Prospección</h1>
+    <p class="lead">Todo tu sistema en un lugar: lo que encuentra la búsqueda de cada mañana y el asistente que te redacta los mensajes. Nadie recibe un mensaje sin que tú lo revises y lo envíes.</p>
+    <span class="last" id="last">Cargando la última búsqueda…</span>
+  </header>
+
+    <nav class="tabs" role="tablist" aria-label="Secciones">
+    <button type="button" role="tab" id="tab-radar" data-tab="radar" aria-selected="true">Radar</button>
+    <button type="button" role="tab" id="tab-redactar" data-tab="redactar" aria-selected="false">Redactar</button>
+    <button type="button" role="tab" id="tab-calculadora" data-tab="calculadora" aria-selected="false"><span class="t-long">Calculadoras</span><span class="t-short">Calcular</span></button>
+    <button type="button" role="tab" id="tab-registro" data-tab="registro" aria-selected="false">Registro</button>
+  </nav>
+  <section class="tabpanel" id="p-radar">
+  <div class="bar">
+    <div class="seg" role="group" aria-label="Estado">
+      <button type="button" id="e-nueva" data-e="nueva" aria-pressed="true">Nuevas</button>
+      <button type="button" id="e-aprobada" data-e="aprobada" aria-pressed="false">Aprobadas</button>
+      <button type="button" id="e-descartada" data-e="descartada" aria-pressed="false">Descartadas</button>
+      <button type="button" id="e-todas" data-e="todas" aria-pressed="false">Todas</button>
+    </div>
+    <div class="seg" role="group" aria-label="Tipo">
+      <button type="button" id="t-todos" data-t="todos" aria-pressed="true">Todo</button>
+      <button type="button" id="t-persona" data-t="persona" aria-pressed="false">Personas</button>
+      <button type="button" id="t-evento" data-t="evento" aria-pressed="false">Eventos</button>
+    </div>
+  </div>
+
+  <div class="list" id="list">
+    <div class="empty"><b>Todavía no hay señales</b><span>La búsqueda diaria las deja aquí cada mañana a las 8:50. Si abres esta página fuera de Claude, no se pueden mostrar.</span></div>
+  </div>
+  <span class="status" id="status" aria-live="polite"></span>
+</section>
+  <section class="tabpanel" id="p-redactar" hidden>
+  <div class="a-wrap">
+<div class="modes" role="group" aria-label="Qué necesitas">
+    <button type="button" id="m-first" data-mode="first" aria-pressed="true">Primer mensaje</button>
+    <button type="button" id="m-reply" data-mode="reply" aria-pressed="false">Respondió</button>
+    <button type="button" id="m-quiet" data-mode="quiet" aria-pressed="false">No ha contestado</button>
+  </div>
+
+  <div class="grid">
+    <form class="panel" id="form" autocomplete="off">
+      <h2 id="form-title">Lo que viste</h2>
+      <div class="row">
+        <label>Nombre<input id="f-name" value="Andrea"></label>
+        <label>Canal
+          <select id="f-channel">
+            <option>LinkedIn</option><option>Correo</option><option>Evento</option><option>Instagram</option><option>WhatsApp</option>
+          </select>
+        </label>
+      </div>
+      <label>Tema de interés
+        <select id="f-topic">
+          <option>Retiro</option><option>Inversión a futuro</option><option>Protección patrimonial</option><option>Herencia</option><option>Estrategia financiera</option>
+        </select>
+      </label>
+      <label data-for="first">Plantilla
+        <select id="f-tpl">
+          <option value="Retiro">Retiro</option><option value="Inversión a futuro">Inversión a futuro</option><option value="Protección patrimonial">Protección patrimonial</option><option value="Herencia">Herencia</option><option value="Estrategia financiera">Estrategia financiera</option><option value="evento">Lo conocí en un evento</option><option value="referido">Me lo refirieron</option>
+        </select>
+      </label>
+      <label data-for="first"><span id="f-det-label">Detalle concreto de su publicación</span><input id="f-det" value="cómo abriste tu PPR a los 31"></label>
+      <p class="hint" data-for="first">La plantilla se llena sola mientras escribes. "Redactar con Claude" hace una versión más personal a partir de la señal completa de abajo.</p>
+      <label data-for="first reply">Señal pública (pega el texto o lo que platicaron)
+        <textarea id="f-signal">Ejemplo: "Este año abrí mi PPR a los 31. Me costó entender las comisiones, pero me siento más tranquila sabiendo que cada mes aparto algo para mi retiro."</textarea>
+      </label>
+      <label data-for="first reply">Link de la señal<input id="f-link" value="https://www.linkedin.com/posts/ejemplo"></label>
+      <label data-for="reply" hidden>Lo que respondió
+        <textarea id="f-reply">Ejemplo: "Hola Carlos, gracias. Sí me interesa, aunque la verdad no sé cuánto costaría algo así."</textarea>
+      </label>
+      <label data-for="reply" hidden>Mensajes anteriores (opcional)
+        <textarea id="f-history" placeholder="Pega aquí la conversación previa si la hay"></textarea>
+      </label>
+      <label data-for="reply" hidden>Tus horarios disponibles
+        <input id="f-slots" value="martes 6:00 pm, miércoles 1:00 pm, jueves 9:00 am">
+      </label>
+      <label class="check" data-for="reply" hidden><input type="checkbox" id="f-wa"> Ya aceptó recibir WhatsApp</label>
+      <p class="hint" id="example-hint">Los datos que ves son un ejemplo: cámbialos por la señal real.</p>
+      <div class="actions">
+        <button class="btn primary" type="submit" id="go">Redactar con Claude</button>
+        <button class="btn stop" type="button" id="stop" hidden>Detener</button>
+        <a class="btn see-msg" href="#out">Ver mensaje ↓</a>
+        <span class="status" id="a-status" aria-live="polite"></span>
+      </div>
+      <p class="note-off" id="off" hidden>El asistente de redacción no está disponible en esta vista. Las plantillas de arriba sí funcionan: elige el tema y escribe el detalle.</p>
+    </form>
+
+    <section class="panel" id="out" aria-live="polite">
+      <div class="out-head">
+        <h2 id="out-title">Mensaje para LinkedIn</h2>
+        <span class="pill example" id="badge">Ejemplo</span>
+      </div>
+      <div class="bubble" id="msg">Hola, Andrea. Leí tu publicación sobre abrir tu PPR a los 31 y me gustó que ya estés apartando algo cada mes para tu retiro; no es común empezar tan pronto. Soy Carlos Flores Díaz, asesor de Seguros Monterrey New York Life en CDMX. Me encantaría conocerte: ¿te late un café virtual de 15 minutos alguno de estos días?</div>
+      <div class="meta"><span id="count">61 palabras</span><button class="btn" type="button" id="copy">Copiar mensaje</button><button class="btn" type="button" id="save-msg">Guardar en registro</button></div>
+
+      <div class="block">
+        <h3>En Bitrix24</h3>
+        <div class="stage" id="stage">Señal detectada → Primer mensaje enviado</div>
+        <dl id="fields"><dt>Señal pública</dt><dd>https://www.linkedin.com/posts/ejemplo</dd><dt>Tema de interés</dt><dd>Retiro</dd><dt>Canal de contacto</dt><dd>LinkedIn</dd></dl>
+      </div>
+
+      <div class="block" id="cal-block" hidden>
+        <h3>Aviso para tu calendario</h3>
+        <pre class="cal" id="cal"></pre>
+        <div><button class="btn" type="button" id="copy-cal">Copiar aviso</button></div>
+      </div>
+
+      <div class="block" id="notes-block">
+        <h3>Antes de enviar</h3>
+        <ul class="notes" id="notes"><li>Confirma que la publicación es reciente (últimos 30 días).</li><li>Revisa que el detalle mencionado esté tal cual en su publicación.</li></ul>
+      </div>
+    </section>
+  </div>
+</div>
+  </section>
+  <section class="tabpanel" id="p-calculadora" hidden>
+    <div class="peek" id="calc-peek" aria-hidden="true"><span id="peek-label">Suma asegurada sugerida</span><b id="peek-value">$0</b></div>
+    <label class="cliente">Cliente<input id="calc-cliente" placeholder="Nombre de la persona (sale en el resumen y en la imagen)"></label>
+    <div class="cmodes" role="group" aria-label="Calculadora">
+      <button type="button" data-calc="prot" aria-pressed="true">Protección familiar</button>
+      <button type="button" data-calc="ret" aria-pressed="false">Retiro</button>
+      <button type="button" data-calc="gmm" aria-pressed="false">Gastos médicos</button>
+      <button type="button" data-calc="edu" aria-pressed="false">Educación</button>
+    </div>
+
+    <div class="calc-grid" data-pane="prot">
+      <form class="panel" id="nc-form" autocomplete="off">
+        <h2>¿Cuánto necesita su familia si falta?</h2>
+        <div class="row">
+          <label>Ingreso mensual (MXN)<input id="nc-ingreso" type="number" inputmode="numeric" min="0" step="1000" value="30000"></label>
+          <label>Años de protección<input id="nc-anos" type="number" inputmode="numeric" min="1" max="40" step="1" value="10"></label>
+        </div>
+        <div class="row">
+          <label>Hijos<input id="nc-hijos" type="number" inputmode="numeric" min="0" max="10" step="1" value="2"></label>
+          <label>Educación por hijo (MXN)<input id="nc-edu" type="number" inputmode="numeric" min="0" step="50000" value="400000"></label>
+        </div>
+        <div class="row">
+          <label>Deudas: hipoteca, créditos (MXN)<input id="nc-deudas" type="number" inputmode="numeric" min="0" step="50000" value="500000"></label>
+          <label>Ahorros y seguros que ya tiene (MXN)<input id="nc-ahorro" type="number" inputmode="numeric" min="0" step="50000" value="0"></label>
+        </div>
+        <p class="hint">Fórmula: ingreso × 12 × años + deudas + educación por hijo × hijos − lo que ya tiene. Es la misma de tu página.</p>
+      </form>
+      <section class="panel" aria-live="polite">
+        <h2>Suma asegurada sugerida</h2>
+        <p class="nc-total" id="nc-total">$0</p>
+        <div class="nc-bar" id="nc-bar" role="img"></div>
+        <dl class="nc-legend" id="nc-legend"></dl>
+        <p class="note" id="nc-less" hidden></p>
+        <div class="block"><h3>Resumen para Bitrix24</h3><pre class="cal" data-sum="prot"></pre><div><button class="btn" type="button" data-copy-sum="prot">Copiar resumen</button> <button class="btn primary" type="button" data-img="prot">Crear imagen</button> <button class="btn" type="button" data-save="prot">Guardar en registro</button></div></div>
+      </section>
+    </div>
+
+    <div class="calc-grid" data-pane="ret" hidden>
+      <form class="panel" id="rt-form" autocomplete="off">
+        <h2>¿Cuánto podría tener para su retiro?</h2>
+        <div class="row">
+          <label>Edad actual<input id="rt-edad" type="number" inputmode="numeric" min="18" max="70" value="30"></label>
+          <label>Edad de retiro<input id="rt-retiro" type="number" inputmode="numeric" min="40" max="80" value="65"></label>
+        </div>
+        <div class="row">
+          <label>Ahorro al mes (MXN)<input id="rt-ahorro" type="number" inputmode="numeric" min="0" step="500" value="2000"></label>
+          <label>Aumento anual del ahorro (%)<input id="rt-aumento" type="number" inputmode="decimal" min="0" max="20" step="0.5" value="0"></label>
+        </div>
+        <div class="row">
+          <label>Rendimiento anual supuesto (%)<input id="rt-tasa" type="number" inputmode="decimal" min="0" max="20" step="0.5" value="5"></label>
+          <label>Inflación anual (%)<input id="rt-infl" type="number" inputmode="decimal" min="0" max="20" step="0.5" value="4"></label>
+        </div>
+        <p class="hint">Aportación mensual con interés compuesto mensual, igual que la calculadora de tu página (5% anual). Ajusta el rendimiento al del producto real antes de mostrarlo.</p>
+      </form>
+      <section class="panel" aria-live="polite">
+        <h2>Al retirarse</h2>
+        <div class="kpis">
+          <div><small>Aportaría</small><b id="rt-aporte">$0</b></div>
+          <div class="hl"><small>Podría acumular</small><b id="rt-total">$0</b></div>
+          <div><small>En pesos de hoy</small><b id="rt-hoy">$0</b></div>
+        </div>
+        <svg id="rt-svg" class="chart" viewBox="0 0 560 220" role="img" aria-label="Ahorro acumulado por edad"></svg>
+        <p class="legend-line"><span class="sw gold"></span>Con rendimiento <span class="sw grey"></span>Lo que aporta</p>
+        <div class="block"><h3>Resumen para Bitrix24</h3><pre class="cal" data-sum="ret"></pre><div><button class="btn" type="button" data-copy-sum="ret">Copiar resumen</button> <button class="btn primary" type="button" data-img="ret">Crear imagen</button> <button class="btn" type="button" data-save="ret">Guardar en registro</button></div></div>
+      </section>
+    </div>
+
+    <div class="calc-grid" data-pane="gmm" hidden>
+      <form class="panel" id="gm-form" autocomplete="off">
+        <h2>¿Cuánto costaría un evento médico mayor?</h2>
+        <label>Padecimiento de referencia
+          <select id="gm-evento">
+            <option value="4200000">Enfermedades hematológicas · $4.2 millones</option>
+            <option value="2680000" selected>Cáncer y tumores · $2.68 millones</option>
+            <option value="2670000">Sistema nervioso · $2.67 millones</option>
+            <option value="2570000">Hemorragia intracerebral · $2.57 millones</option>
+            <option value="2380000">Enfermedad renal · $2.38 millones</option>
+            <option value="2360000">Aparato respiratorio · $2.36 millones</option>
+            <option value="2280000">Accidentes · $2.28 millones</option>
+            <option value="custom">Otro monto…</option>
+          </select></label>
+        <label id="gm-custom-wrap" hidden>Costo de hoy (MXN)<input id="gm-custom" type="number" inputmode="numeric" min="0" step="50000" value="1000000"></label>
+        <div class="row">
+          <label>¿En cuántos años?<input id="gm-anos" type="number" inputmode="numeric" min="0" max="40" value="0"></label>
+          <label>Inflación médica anual (%)<input id="gm-infl" type="number" inputmode="decimal" min="0" max="30" step="0.5" value="10"></label>
+        </div>
+        <label>Ahorros que podría usar (MXN)<input id="gm-ahorro" type="number" inputmode="numeric" min="0" step="50000" value="300000"></label>
+        <p class="hint">Costos promedio por caso de alto costo pagados por aseguradoras en México, según AMIS (reportado en julio de 2025). Aon proyecta 14.8% de inflación médica en México para 2026; aquí se usa 10% como supuesto de largo plazo, cámbialo si quieres.</p>
+      </form>
+      <section class="panel" aria-live="polite">
+        <h2>Costo estimado</h2>
+        <p class="nc-total" id="gm-costo">$0</p>
+        <div class="kpis">
+          <div><small>Lo cubren sus ahorros</small><b id="gm-cubre">$0</b></div>
+          <div class="hl"><small>Le faltaría</small><b id="gm-falta">$0</b></div>
+          <div><small>Sus ahorros alcanzan</small><b id="gm-pct">0%</b></div>
+        </div>
+        <div class="nc-bar" id="gm-bar" role="img"></div>
+        <div class="block"><h3>Resumen para Bitrix24</h3><pre class="cal" data-sum="gmm"></pre><div><button class="btn" type="button" data-copy-sum="gmm">Copiar resumen</button> <button class="btn primary" type="button" data-img="gmm">Crear imagen</button> <button class="btn" type="button" data-save="gmm">Guardar en registro</button></div></div>
+      </section>
+    </div>
+
+    <div class="calc-grid" data-pane="edu" hidden>
+      <form class="panel" id="ed-form" autocomplete="off">
+        <h2>¿Cuánto ahorrar para la universidad?</h2>
+        <div class="row">
+          <label>Edad del hijo<input id="ed-edad" type="number" inputmode="numeric" min="0" max="17" value="5"></label>
+          <label>Edad de ingreso<input id="ed-ingreso" type="number" inputmode="numeric" min="15" max="25" value="18"></label>
+        </div>
+        <label>Tipo de universidad
+          <select id="ed-tipo">
+            <option value="1500687">Privada premium (Tec, Ibero) · $1,500,687</option>
+            <option value="823294" selected>Privada media (La Salle, Anáhuac regional) · $823,294</option>
+            <option value="406436">Privada económica (UVM, UNITEC) · $406,436</option>
+            <option value="custom">Otro monto…</option>
+          </select></label>
+        <label id="ed-custom-wrap" hidden>Costo total de hoy (MXN)<input id="ed-custom" type="number" inputmode="numeric" min="0" step="50000" value="900000"></label>
+        <div class="row">
+          <label>Inflación educativa (%)<input id="ed-infl" type="number" inputmode="decimal" min="0" max="20" step="0.5" value="5.5"></label>
+          <label>Rendimiento anual (%)<input id="ed-tasa" type="number" inputmode="decimal" min="0" max="20" step="0.5" value="5"></label>
+        </div>
+        <label>Ya tiene ahorrado (MXN)<input id="ed-ahorro" type="number" inputmode="numeric" min="0" step="10000" value="0"></label>
+        <p class="hint">Costos de carrera completa de cuatro años estimados por CotizadorHipotecario.mx y publicados por Expansión (agosto de 2026), con 5.5% de inflación educativa.</p>
+      </form>
+      <section class="panel" aria-live="polite">
+        <h2>Cuando entre a la universidad</h2>
+        <div class="kpis">
+          <div><small>Costo esperado</small><b id="ed-costo">$0</b></div>
+          <div class="hl"><small>Ahorro al mes desde hoy</small><b id="ed-mes">$0</b></div>
+          <div><small>Faltan</small><b id="ed-anos">0 años</b></div>
+        </div>
+        <p class="note" id="ed-nota"></p>
+        <div class="block"><h3>Resumen para Bitrix24</h3><pre class="cal" data-sum="edu"></pre><div><button class="btn" type="button" data-copy-sum="edu">Copiar resumen</button> <button class="btn primary" type="button" data-img="edu">Crear imagen</button> <button class="btn" type="button" data-save="edu">Guardar en registro</button></div></div>
+      </section>
+    </div>
+    <p class="note">Son estimaciones para orientar la plática, no cotizaciones. La prima se cotiza en el ANF; ahí se valida el mínimo de $25,000 al año.</p>
+  </section>
+  <section class="tabpanel" id="p-registro" hidden>
+    <div class="bar">
+      <div class="seg" role="group" aria-label="Tipo de registro">
+        <button type="button" data-rf="todo" aria-pressed="true">Todo</button>
+        <button type="button" data-rf="calculo" aria-pressed="false">Cálculos</button>
+        <button type="button" data-rf="mensaje" aria-pressed="false">Mensajes</button>
+      </div>
+      <input class="search" id="reg-buscar" type="search" placeholder="Buscar por nombre" aria-label="Buscar por nombre">
+    </div>
+    <div class="list" id="reg-list"><div class="empty"><b>Tu registro está vacío</b><span>Guarda un cálculo o un mensaje con "Guardar en registro", o crea una imagen de una calculadora: quedan aquí con fecha.</span></div></div>
+    <span class="status" id="reg-status" aria-live="polite"></span>
+  </section>
+</div>
+<div class="imgmodal" id="img-modal" hidden role="dialog" aria-modal="true" aria-labelledby="img-title">
+  <div class="imgbox">
+    <div class="imghead"><b id="img-title">Imagen para tu cliente</b><button class="btn" type="button" id="img-close">Cerrar</button></div>
+    <img id="img-prev" alt="Vista previa del resumen en imagen">
+    <div class="actions"><button class="btn primary" type="button" id="img-save">Guardar imagen</button><button class="btn" type="button" id="img-copy">Copiar imagen</button><span class="status" id="img-status" aria-live="polite"></span></div>
+    <p class="note">En el celular: guárdala y compártela por WhatsApp desde tu galería.</p>
+  </div>
+</div>
+
+
+<script>
+
+(function(){
+  const $ = id => document.getElementById(id);
+  let rows = [], estado = 'nueva', tipo = 'todos', db = null, sample = null;
+  const TEMA_RULES = `Eres el asistente de prospección de Carlos Flores Díaz, asesor de Seguros Monterrey New York Life en Ciudad de México. Español de México, cálido, breve, tuteando. Primer mensaje de menos de 80 palabras, sin emojis ni links: saludo con su nombre; una frase con un detalle concreto de la señal; "Soy Carlos Flores Díaz, asesor de Seguros Monterrey New York Life en CDMX"; invitación a un café virtual o llamada de 15 minutos para conocerse. Nunca preguntes por necesidades, ingresos o familia, ni menciones precios, primas o rendimientos. Responde solo con el mensaje.`;
+
+  const fmt = iso => { if (!iso) return ''; const d = new Date(String(iso).slice(0,10) + 'T12:00:00'); return isNaN(d) ? String(iso) : d.toLocaleDateString('es-MX',{day:'numeric',month:'short',year:'numeric'}); };
+
+  function el(tag, cls, text){ const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+
+  function render(){
+    const list = $('list'); list.replaceChildren();
+    const shown = rows.filter(r => (estado === 'todas' || (r.estado || 'nueva') === estado) && (tipo === 'todos' || r.tipo === tipo));
+    const counts = { nueva:0, aprobada:0, descartada:0 }; rows.forEach(r => { const k = r.estado || 'nueva'; if (k in counts) counts[k]++; });
+    $('e-nueva').textContent = `Nuevas ${counts.nueva}`; $('e-aprobada').textContent = `Aprobadas ${counts.aprobada}`; $('e-descartada').textContent = `Descartadas ${counts.descartada}`;
+    if (!shown.length) {
+      const box = el('div','empty'); box.append(el('b',null, rows.length ? 'Nada en esta vista' : 'Todavía no hay señales'), el('span',null, rows.length ? 'Cambia el filtro de arriba para ver las demás.' : 'La búsqueda diaria las deja aquí cada mañana a las 8:50.'));
+      list.append(box); return;
+    }
+    shown.forEach(r => {
+      const card = el('article','item'); card.dataset.estado = r.estado || 'nueva';
+      const top = el('div','top');
+      top.append(el('span','pill tipo', r.tipo === 'evento' ? 'Evento' : 'Persona'));
+      if (r.tema) top.append(el('span','pill', r.tema));
+      const e = r.estado || 'nueva';
+      if (e === 'aprobada') top.append(el('span','pill ok','Aprobada'));
+      if (e === 'descartada') top.append(el('span','pill no','Descartada'));
+      top.append(el('span','date', r.tipo === 'evento' ? fmt(r.fecha) : ('Señal del ' + fmt(r.fecha))));
+      card.append(top, el('h2','name', r.nombre || 'Sin nombre'));
+      if (r.resumen) card.append(el('p','sum', r.resumen));
+      const where = el('p','where');
+      const bits = [r.lugar, r.canal ? 'Contacto: ' + r.canal : ''].filter(Boolean).join(' · ');
+      if (bits) where.append(document.createTextNode(bits + (r.link ? ' · ' : '')));
+      if (r.link && /^https:\/\//.test(r.link)) { const a = el('a',null,'Ver fuente'); a.href = r.link; a.target = '_blank'; a.rel = 'noopener'; where.append(a); }
+      card.append(where);
+      const act = el('div','actions');
+      if (db) {
+        if (e !== 'aprobada') { const b = el('button','btn good', r.tipo === 'evento' ? 'Iré' : 'Aprobar'); b.type = 'button'; b.onclick = () => setEstado(r, 'aprobada'); act.append(b); }
+        if (e !== 'descartada') { const b = el('button','btn','Descartar'); b.type = 'button'; b.onclick = () => setEstado(r, 'descartada'); act.append(b); }
+        if (e !== 'nueva') { const b = el('button','btn','Regresar a nuevas'); b.type = 'button'; b.onclick = () => setEstado(r, 'nueva'); act.append(b); }
+      }
+      if (r.tipo !== 'evento' && sample) {
+        const b = el('button','btn primary','Redactar primer mensaje'); b.type = 'button';
+        const out = el('div','draft'); out.hidden = true;
+        const copy = el('button','btn','Copiar mensaje'); copy.type = 'button'; copy.hidden = true;
+        b.onclick = () => draft(r, b, out, copy);
+        copy.onclick = () => { try { navigator.clipboard.writeText(out.textContent).then(() => { copy.textContent = 'Copiado'; }, () => selectText(out)); } catch (_) { selectText(out); } };
+        act.append(b); card.append(act, out, copy);
+      } else card.append(act);
+      list.append(card);
+    });
+  }
+
+  function selectText(node){ const rg = document.createRange(); rg.selectNodeContents(node); const s = getSelection(); s.removeAllRanges(); s.addRange(rg); $('status').textContent = 'Texto seleccionado: cópialo con Ctrl+C.'; }
+
+  async function setEstado(r, e){
+    try { await db.collection('senales').doc(r.id).update({ estado: e }); $('status').textContent = ''; }
+    catch (err) { $('status').textContent = 'No se pudo guardar el cambio. Revisa tu conexión e intenta de nuevo.'; }
+  }
+
+  async function draft(r, btn, out, copy){
+    btn.disabled = true; out.hidden = false; out.textContent = 'Pensando…';
+    try {
+      const { text } = await sample(`${TEMA_RULES}\n\nNombre: ${r.nombre}\nTema: ${r.tema || ''}\nCanal: ${r.canal || ''}\nSeñal pública: """${String(r.resumen || '').slice(0,1500)}"""`, { onText: ({text}) => { out.textContent = text; } });
+      out.textContent = text.trim(); copy.hidden = false;
+    } catch (err) {
+      out.textContent = err && err.code === 'not_granted' ? 'No diste permiso para usar Claude en esta página.' : (err && err.code === 'rate_limited' ? 'Demasiadas solicitudes seguidas; espera un momento.' : 'No se pudo redactar. Intenta de nuevo.');
+    } finally { btn.disabled = false; }
+  }
+
+  document.querySelectorAll('[data-e]').forEach(b => b.addEventListener('click', () => { estado = b.dataset.e; document.querySelectorAll('[data-e]').forEach(x => x.setAttribute('aria-pressed', String(x === b))); render(); }));
+  document.querySelectorAll('[data-t]').forEach(b => b.addEventListener('click', () => { tipo = b.dataset.t; document.querySelectorAll('[data-t]').forEach(x => x.setAttribute('aria-pressed', String(x === b))); render(); }));
+
+  (async () => {
+    const [d, s] = await Promise.all([window.claude.use('db'), window.claude.use('sample')]);
+    db = d; sample = s;
+    if (!db) { $('last').textContent = 'Abre esta página dentro de Claude para ver las señales.'; render(); return; }
+    db.collection('senales').orderBy('encontrada','desc').onSnapshot(snap => {
+      rows = snap.docs.map(x => Object.assign({ id: x.id }, x.data()));
+      render();
+    }, () => { $('status').textContent = 'No se pudieron cargar las señales.'; });
+    db.doc('meta/ultima').onSnapshot(snap => {
+      const m = snap.exists ? snap.data() : null;
+      $('last').textContent = m ? `Última búsqueda: ${fmt(m.fecha)} · ${m.encontrados ?? 0} señales nuevas${m.nota ? ' · ' + m.nota : ''}` : 'Aún no corre la primera búsqueda diaria.';
+    });
+  })();
+  render();
+})();
+
+</script>
+<script>
+
+(function(){
+  const $ = id => document.getElementById(id);
+  let mode = 'first', sample = null, ctl = null;
+
+  const RULES = `Eres el asistente de prospección de Carlos Flores Díaz, asesor de Seguros Monterrey New York Life en Ciudad de México (marca JD Díaz). Escribes en español de México, cálido, breve y profesional, tuteando. Carlos revisa y envía cada mensaje él mismo.
+Reglas que no se rompen:
+- Primer mensaje: menos de 80 palabras, sin emojis, sin links. Estructura: saludo con su nombre; una frase que demuestre que leyó la señal, con un detalle concreto tomado de la señal; "Soy Carlos Flores Díaz, asesor de Seguros Monterrey New York Life en CDMX"; invitación a conocerse en un café virtual o llamada de 15 minutos. NO preguntar por necesidades, ingresos, familia ni hijos. NO mencionar precios, primas, coberturas ni rendimientos.
+- Si la señal no trae un detalle concreto y verificable, no redactes: marca senal_valida=false y explica por qué.
+- Nunca cotizar ni estimar primas por mensaje: la revisión de necesidades y la prima se ven en la cita y el ANF; ahí se valida el mínimo de $25,000 MXN anuales (no lo menciones al prospecto).
+- Ante "no me interesa": agradecer y hacer UNA sola pregunta opcional sobre el motivo; si ya se hizo antes, no escribir más.
+- Ante cualquier petición de no contacto: solo una disculpa breve y la promesa de no volver a escribir; etapa No contactar.
+- Si muestra interés o pregunta algo: responder breve y proponer 2 o 3 de los horarios de Carlos para una cita.
+- Si confirma un horario: confirmar la cita y preparar un aviso para el calendario de Carlos.
+- WhatsApp solo si la persona compartió su número y aceptó ese canal; si da su número sin aceptar, pedir permiso para escribirle por ahí.
+Etapas válidas de Bitrix24: Señal detectada, Primer mensaje enviado, Respondió, Cita propuesta, Cita confirmada, ANF realizado, Propuesta enviada, Póliza emitida, Perdida, No contactar.
+Campos válidos: Señal pública (link), Fecha de la señal, Tema de interés, Canal de contacto, Aceptó recibir WhatsApp, Fecha en que aceptó WhatsApp, No contactar, Motivo de no interés (No le interesa por ahora / Ya tiene seguro / Presupuesto / Prima menor a $25,000 al año / Sin respuesta / Pidió no ser contactado / Otro), Detalle del motivo, Fecha y hora de la cita, Prima anual validada en ANF (MXN).`;
+
+  function data(){
+    return { nombre:$('f-name').value.trim(), canal:$('f-channel').value, tema:$('f-topic').value,
+      senal:$('f-signal').value.trim(), link:$('f-link').value.trim(), respuesta:$('f-reply').value.trim(),
+      historial:$('f-history').value.trim(), horarios:$('f-slots').value.trim(), whatsapp:$('f-wa').checked };
+  }
+
+  function prompt(d){
+    const today = new Date().toLocaleDateString('es-MX',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+    const shape = `Responde SOLO con un objeto JSON con esta forma:
+{"senal_valida": true, "motivo": "", "clasificacion": "", "mensaje": "", "etapa": "", "campos": [{"campo": "", "valor": ""}], "aviso_cita": "", "notas": [""]}
+- clasificacion: una de primer_mensaje, interes, pregunta, no_interesa, no_contactar, confirma_cita, otro.
+- mensaje: el texto listo para enviar por ${d.canal}, o "" si no se debe enviar nada.
+- etapa: la etapa de Bitrix24 a la que se mueve la negociación (puedes escribir "A → B").
+- campos: solo los campos de Bitrix24 que hay que llenar o cambiar, con su valor.
+- aviso_cita: solo si confirmó cita, con líneas "Cita:", "Fecha y hora:", "Lugar:", "Señal:", "Contacto:", "Preparar:"; si no, "".
+- notas: 1 a 3 cosas cortas que Carlos debe revisar antes de enviar.`;
+    if (mode === 'first') return `${RULES}
+
+Tarea: redacta el PRIMER mensaje para este prospecto.
+Hoy es ${today}.
+Nombre: ${d.nombre || '(sin nombre)'}
+Canal: ${d.canal}
+Tema de interés: ${d.tema}
+Señal pública (texto tal como la vio Carlos): """${d.senal.slice(0,3000)}"""
+Link de la señal: ${d.link || '(sin link)'}
+
+${shape}`;
+    return `${RULES}
+
+Tarea: analiza la respuesta del prospecto y redacta el siguiente mensaje.
+Hoy es ${today}.
+Nombre: ${d.nombre || '(sin nombre)'}
+Canal actual: ${d.canal}
+Tema de interés: ${d.tema}
+Señal original: """${d.senal.slice(0,1500)}"""
+Conversación previa: """${(d.historial || '(no hay)').slice(0,4000)}"""
+Lo que respondió ahora: """${d.respuesta.slice(0,2000)}"""
+Horarios disponibles de Carlos: ${d.horarios || '(no los dio; pide que te diga qué día le acomoda)'}
+¿Ya aceptó recibir WhatsApp?: ${d.whatsapp ? 'sí' : 'no'}
+
+${shape}`;
+  }
+
+  function setMode(m){
+    mode = m;
+    document.querySelectorAll('.modes button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.mode === m)));
+    document.querySelectorAll('[data-for]').forEach(el => { el.hidden = !el.dataset.for.split(' ').includes(m); });
+    $('form-title').textContent = m === 'first' ? 'Lo que viste' : m === 'reply' ? 'Lo que te contestó' : 'Recordatorio';
+    $('go').textContent = m === 'first' ? 'Redactar con Claude' : m === 'reply' ? 'Analizar y responder' : 'Preparar recordatorio';
+    $('go').disabled = m !== 'quiet' && !sample;
+  }
+  document.querySelectorAll('.modes button').forEach(b => b.addEventListener('click', () => setMode(b.dataset.mode)));
+
+  function words(t){ return (t.trim().match(/\S+/g) || []).length; }
+  const PILL = { primer_mensaje:['Primer mensaje','good'], interes:['Le interesa','good'], pregunta:['Pregunta algo','good'], confirma_cita:['Confirmó cita','good'], no_interesa:['No le interesa','warn'], no_contactar:['No contactar','bad'], otro:['Revisar','warn'], recordatorio:['Recordatorio','warn'], invalida:['Señal sin detalle','bad'] };
+
+  function render(r, d){
+    const kind = r.senal_valida === false ? 'invalida' : (r.clasificacion || 'otro');
+    const [label, tone] = PILL[kind] || PILL.otro;
+    const badge = $('badge'); badge.textContent = label; badge.className = 'pill ' + tone;
+    $('out-title').textContent = 'Mensaje para ' + d.canal;
+    const msg = $('msg');
+    msg.textContent = r.senal_valida === false ? ('No conviene escribir con esta señal: ' + (r.motivo || 'no trae un detalle concreto y verificable.')) : (r.mensaje || 'No hay que enviar ningún mensaje.');
+    msg.classList.remove('fresh'); void msg.offsetWidth; msg.classList.add('fresh');
+    $('count').textContent = r.mensaje ? words(r.mensaje) + ' palabras' : '';
+    $('copy').hidden = !r.mensaje || r.senal_valida === false;
+    $('stage').textContent = r.etapa || '—';
+    const dl = $('fields'); dl.replaceChildren();
+    (Array.isArray(r.campos) ? r.campos : []).forEach(c => {
+      if (!c || !c.campo) return;
+      const dt = document.createElement('dt'); dt.textContent = String(c.campo);
+      const dd = document.createElement('dd'); dd.textContent = String(c.valor ?? '');
+      dl.append(dt, dd);
+    });
+    const cal = (r.aviso_cita || '').trim();
+    $('cal-block').hidden = !cal; $('cal').textContent = cal;
+    const ul = $('notes'); ul.replaceChildren();
+    (Array.isArray(r.notas) ? r.notas : []).filter(Boolean).forEach(n => { const li = document.createElement('li'); li.textContent = String(n); ul.append(li); });
+    $('notes-block').hidden = !ul.children.length;
+  }
+
+  function reminder(d){
+    const n = d.nombre || '[Nombre]';
+    render({ clasificacion:'recordatorio', mensaje:`Hola, ${n}, solo retomo mi mensaje anterior por si se perdió. Si te late conocernos, aquí estoy; si no es buen momento, no te preocupes.`,
+      etapa:'Primer mensaje enviado (se queda); si en 7 días más no contesta → Perdida',
+      campos:[{campo:'Comentario', valor:'Recordatorio enviado el ' + new Date().toLocaleDateString('es-MX')},{campo:'Motivo de no interés (si no contesta)', valor:'Sin respuesta'}],
+      notas:['Es el único recordatorio: después de este ya no se insiste.'] }, d);
+    $('a-status').textContent = '';
+  }
+
+  const ERR = { not_granted:'No diste permiso para usar Claude en esta página.', sampling_disabled:'Claude no está disponible en esta cuenta.', rate_limited:'Demasiadas solicitudes seguidas. Espera un momento y vuelve a intentar.', session_expired:'Tu sesión expiró: vuelve a iniciar sesión en Claude.', refused:'Claude no pudo redactar con ese texto. Cambia la señal o la respuesta e intenta de nuevo.', invalid_json:'La respuesta llegó incompleta. Intenta de nuevo.', empty_completion:'No llegó texto. Intenta de nuevo con menos información.' };
+
+  $('form').addEventListener('submit', async e => {
+    e.preventDefault();
+    const d = data();
+    if (mode === 'quiet') { reminder(d); return; }
+    if (!sample) return;
+    if (mode === 'first' && d.senal.length < 15) { $('a-status').textContent = 'Pega el texto de la señal pública (la publicación o lo que platicaron).'; return; }
+    if (mode === 'reply' && !d.respuesta) { $('a-status').textContent = 'Pega lo que te respondió.'; return; }
+    ctl = new AbortController();
+    $('go').disabled = true; $('stop').hidden = false; $('a-status').textContent = 'Pensando…';
+    try {
+      const r = await sample.json(prompt(d), { signal: ctl.signal, cache: false });
+      if (!r || typeof r !== 'object') throw { code: 'invalid_json' };
+      render(r, d); $('a-status').textContent = 'Listo. Revísalo antes de enviarlo.';
+    } catch (err) {
+      const code = err && err.code;
+      if (code === 'cancelled') $('a-status').textContent = 'Detenido.';
+      else {
+        $('a-status').textContent = ERR[code] || 'Algo falló al conectar con Claude. Intenta de nuevo.';
+        if (['not_granted','sampling_disabled','not_declared','capability_disabled','capability_removed'].includes(code)) { sample = null; $('off').hidden = false; }
+      }
+    } finally {
+      $('stop').hidden = true; $('go').disabled = !sample && mode !== 'quiet';
+    }
+  });
+  $('stop').addEventListener('click', () => ctl && ctl.abort());
+
+  function copyText(text, btn){
+    const done = () => { const t = btn.textContent; btn.textContent = 'Copiado'; setTimeout(() => btn.textContent = t, 1400); };
+    try {
+      navigator.clipboard.writeText(text).then(done, () => selectFallback(btn));
+    } catch (_) { selectFallback(btn); }
+  }
+  function selectFallback(btn){
+    const el = btn.id === 'copy-cal' ? $('cal') : $('msg');
+    const r = document.createRange(); r.selectNodeContents(el);
+    const s = getSelection(); s.removeAllRanges(); s.addRange(r);
+    $('a-status').textContent = 'Texto seleccionado: cópialo con Ctrl+C.';
+  }
+  $('copy').addEventListener('click', e => copyText($('msg').textContent, e.currentTarget));
+  $('copy-cal').addEventListener('click', e => copyText($('cal').textContent, e.currentTarget));
+
+  ['f-signal','f-reply'].forEach(id => $(id).addEventListener('focus', function once(){
+    if (this.value.startsWith('Ejemplo:')) { this.select(); }
+  }));
+
+  setMode('first');
+  (async () => {
+    const s = window.claude && window.claude.use ? await window.claude.use('sample') : null;
+    sample = s;
+    if (!s) { $('off').hidden = false; }
+    setMode(mode);
+  })();
+})();
+
+</script>
+<script>
+(function(){
+  const tabs=[...document.querySelectorAll('[data-tab]')];
+  function show(name){
+    tabs.forEach(t=>t.setAttribute('aria-selected',String(t.dataset.tab===name)));
+    document.querySelectorAll('.tabpanel').forEach(p=>{p.hidden=p.id!=='p-'+name;});
+    try{ history.replaceState(null,'','#'+name); }catch(e){}
+  }
+  tabs.forEach(t=>t.addEventListener('click',()=>show(t.dataset.tab)));
+  const h=(location.hash||'').slice(1); if(['radar','redactar','calculadora','registro'].includes(h)) show(h);
+  document.querySelectorAll('.copy-link').forEach(b=>b.addEventListener('click',()=>{
+    const u=b.dataset.copy; const ok=()=>{b.textContent='Copiado';setTimeout(()=>b.textContent='Copiar link',1400);};
+    try{ navigator.clipboard.writeText(u).then(ok,()=>sel(b)); }catch(e){ sel(b); }
+  }));
+  function sel(b){ const c=b.parentElement.querySelector('code'); const rg=document.createRange(); rg.selectNodeContents(c); const s=getSelection(); s.removeAllRanges(); s.addRange(rg); }
+})();
+</script>
+
+<script>
+(function(){
+  const $=id=>document.getElementById(id);
+  const money=n=>'$'+Math.round(n).toLocaleString('es-MX');
+  const short=n=>n>=1e6?'$'+(n/1e6).toFixed(1).replace('.0','')+' M':n>=1e3?'$'+Math.round(n/1e3)+' mil':'$'+Math.round(n);
+  const num=(id,max)=>{let v=Number($(id).value); if(!isFinite(v)||v<0)v=0; return max!=null?Math.min(v,max):v;};
+  const today=()=>new Date().toLocaleDateString('es-MX');
+  const setSum=(k,lines)=>{ document.querySelector('[data-sum="'+k+'"]').textContent=lines.join('\n'); };
+  function bar(el,parts){ el.replaceChildren(); parts.forEach(([v,c,l])=>{ if(v>0){const s=document.createElement('span'); s.style.flex=String(v); s.style.background=c; s.title=l+': '+money(v); el.append(s);} }); el.setAttribute('aria-label',parts.map(p=>p[2]+' '+money(p[0])).join(', ')); }
+
+  /* Protección familiar */
+  const PARTS=[['ingreso','Ingreso para su familia','var(--gold-fill)'],['deudas','Liquidar deudas','var(--muted)'],['edu','Educación de sus hijos','#f3e6c4']];
+  function prot(){
+    const ing=num('nc-ingreso'), anos=num('nc-anos',40), hijos=Math.round(num('nc-hijos',10)), edu=num('nc-edu'), deu=num('nc-deudas'), aho=num('nc-ahorro');
+    const v={ingreso:ing*12*anos, deudas:deu, edu:hijos*edu}, bruto=v.ingreso+v.deudas+v.edu, total=Math.max(0,bruto-aho);
+    $('nc-total').textContent=money(total);
+    bar($('nc-bar'),PARTS.map(([k,l,c])=>[v[k],c,l]));
+    const lg=$('nc-legend'); lg.replaceChildren();
+    PARTS.forEach(([k,l,c])=>{ const i=document.createElement('i'); i.style.background=c; const dt=document.createElement('dt'); dt.textContent=l; const dd=document.createElement('dd'); dd.textContent=money(v[k]); lg.append(i,dt,dd); });
+    $('nc-less').hidden=!aho; $('nc-less').textContent=aho?'Menos '+money(Math.min(aho,bruto))+' de ahorros y seguros que ya tiene.':'';
+    const n=$('calc-cliente').value.trim();
+    setSum('prot',['Protección familiar'+(n?' · '+n:'')+' · '+today(),'Ingreso mensual: '+money(ing)+' · Años de protección: '+anos,'Hijos: '+hijos+' (educación '+money(edu)+' c/u)','Deudas: '+money(deu)+' · Ya tiene: '+money(aho),'Suma asegurada sugerida: '+money(total)]);
+  }
+
+  /* Retiro */
+  function ret(){
+    const e=Math.round(num('rt-edad',80)), er=Math.max(e,Math.round(num('rt-retiro',80))), a=num('rt-ahorro'), inc=num('rt-aumento',20)/100, r=num('rt-tasa',20)/100/12, inf=num('rt-infl',20)/100;
+    let bal=0, ap=0, cuota=a; const s=[{age:e,aporte:0,total:0}];
+    for(let age=e+1; age<=er; age++){ for(let m=0;m<12;m++){ bal=bal*(1+r)+cuota; ap+=cuota; } s.push({age,aporte:ap,total:bal}); cuota*=1+inc; }
+    const n=er-e, hoy=bal/Math.pow(1+inf,n);
+    $('rt-aporte').textContent=money(ap); $('rt-total').textContent=money(bal); $('rt-hoy').textContent=money(hoy);
+    // gráfica
+    const svg=$('rt-svg'), W=560,H=220,L=58,R=16,T=12,B=28, max=Math.max(1,...s.map(d=>d.total));
+    const p=Math.pow(10,Math.floor(Math.log10(max))); let top=10*p; for(const m of [1,1.5,2,2.5,3,4,5,6,8,10]) if(m*p>=max){top=m*p;break;}
+    const X=age=>L+(n?(age-e)/n:0)*(W-L-R), Y=v=>T+(1-v/top)*(H-T-B);
+    const ns='http://www.w3.org/2000/svg', mk=(t,at)=>{const el=document.createElementNS(ns,t); for(const k in at) el.setAttribute(k,at[k]); return el;};
+    svg.replaceChildren();
+    for(let k=0;k<=4;k++){ const v=top*k/4, y=Y(v); svg.append(mk('line',{x1:L,x2:W-R,y1:y,y2:y,stroke:'var(--line)','stroke-width':1})); const t=mk('text',{x:L-8,y:y+4,'text-anchor':'end','font-size':11,fill:'var(--muted)'}); t.textContent=short(v); svg.append(t); }
+    const step=Math.max(1,Math.ceil(n/6/5)*5);
+    for(let age=e; age<=er; age+=step){ const t=mk('text',{x:X(age),y:H-8,'text-anchor':'middle','font-size':11,fill:'var(--muted)'}); t.textContent=age; svg.append(t); }
+    const line=(key,col,w)=>svg.append(mk('polyline',{points:s.map(d=>X(d.age)+','+Y(d[key])).join(' '),fill:'none',stroke:col,'stroke-width':w,'stroke-linejoin':'round'}));
+    const area=mk('polygon',{points:[X(e)+','+Y(0)].concat(s.map(d=>X(d.age)+','+Y(d.total)),[X(er)+','+Y(0)]).join(' '),fill:'var(--gold-fill)','fill-opacity':.14}); svg.append(area);
+    line('aporte','var(--muted)',2); line('total','var(--gold)',2.5);
+    const end=s[s.length-1]; svg.append(mk('circle',{cx:X(end.age),cy:Y(end.total),r:4,fill:'var(--gold)'}));
+    setSum('ret',['Retiro · '+today(),'Edad: '+e+' · Retiro a los '+er+' · Ahorro: '+money(a)+' al mes'+(inc?' (+'+(inc*100)+'% al año)':''),'Rendimiento supuesto: '+num('rt-tasa')+'% anual · Inflación: '+num('rt-infl')+'%','Aportaría: '+money(ap)+' · Podría acumular: '+money(bal),'Equivale a '+money(hoy)+' en pesos de hoy']);
+  }
+
+  /* Gastos médicos */
+  function gmm(){
+    const sel=$('gm-evento'), custom=sel.value==='custom'; $('gm-custom-wrap').hidden=!custom;
+    const base=custom?num('gm-custom'):Number(sel.value), anos=num('gm-anos',40), inf=num('gm-infl',30)/100, aho=num('gm-ahorro');
+    const costo=base*Math.pow(1+inf,anos), cubre=Math.min(aho,costo), falta=Math.max(0,costo-aho), pct=costo?Math.round(cubre/costo*100):0;
+    $('gm-costo').textContent=money(costo); $('gm-cubre').textContent=money(cubre); $('gm-falta').textContent=money(falta); $('gm-pct').textContent=pct+'%';
+    bar($('gm-bar'),[[cubre,'var(--muted)','Cubren sus ahorros'],[falta,'var(--gold-fill)','Le faltaría']]);
+    const nombre=custom?'Monto propio':sel.options[sel.selectedIndex].text.split(' · ')[0];
+    setSum('gmm',['Gastos médicos · '+today(),'Referencia: '+nombre+' ('+money(base)+' hoy)'+(anos?' · en '+anos+' años con '+num('gm-infl')+'% de inflación médica':''),'Costo estimado: '+money(costo),'Ahorros disponibles: '+money(aho)+' · Le faltaría: '+money(falta)]);
+  }
+
+  /* Educación */
+  function edu(){
+    const sel=$('ed-tipo'), custom=sel.value==='custom'; $('ed-custom-wrap').hidden=!custom;
+    const base=custom?num('ed-custom'):Number(sel.value), edad=Math.round(num('ed-edad',25)), ing=Math.round(num('ed-ingreso',25)), ie=num('ed-infl',20)/100, r=num('ed-tasa',20)/100, aho=num('ed-ahorro');
+    const n=Math.max(0,ing-edad), costo=base*Math.pow(1+ie,n), fvAho=aho*Math.pow(1+r,n), falta=Math.max(0,costo-fvAho);
+    const rm=r/12, meses=n*12; const mes=meses===0?falta:(rm?falta*rm/(Math.pow(1+rm,meses)-1):falta/meses);
+    $('ed-costo').textContent=money(costo); $('ed-mes').textContent=money(mes); $('ed-anos').textContent=n+(n===1?' año':' años');
+    $('ed-nota').textContent=n===0?'Ya está en edad de entrar: el monto mostrado es lo que falta hoy.':(fvAho?'Lo que ya tiene ahorrado crecería a '+money(fvAho)+' para entonces.':'');
+    const nombre=custom?'Monto propio':sel.options[sel.selectedIndex].text.split(' · ')[0];
+    setSum('edu',['Educación universitaria · '+today(),'Hijo de '+edad+' años, entra a los '+ing+' ('+n+' años)','Universidad: '+nombre+' · '+money(base)+' hoy · inflación '+num('ed-infl')+'%','Costo esperado: '+money(costo)+' · Ya tiene: '+money(aho),'Ahorro mensual necesario: '+money(mes)+' (rendimiento '+num('ed-tasa')+'%)']);
+  }
+
+  const FN={prot,ret,gmm,edu};
+  [['nc-form','prot'],['rt-form','ret'],['gm-form','gmm'],['ed-form','edu']].forEach(([f,k])=>{ $(f).addEventListener('input',FN[k]); $(f).addEventListener('change',FN[k]); $(f).addEventListener('submit',e=>e.preventDefault()); });
+  document.querySelectorAll('[data-calc]').forEach(b=>b.addEventListener('click',()=>{
+    document.querySelectorAll('[data-calc]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));
+    document.querySelectorAll('[data-pane]').forEach(p=>{p.hidden=p.dataset.pane!==b.dataset.calc;});
+    FN[b.dataset.calc]();
+  }));
+  document.querySelectorAll('[data-copy-sum]').forEach(b=>b.addEventListener('click',()=>{
+    const pre=document.querySelector('[data-sum="'+b.dataset.copySum+'"]'), t=pre.textContent;
+    const ok=()=>{b.textContent='Copiado';setTimeout(()=>b.textContent='Copiar resumen',1400);};
+    const sel=()=>{const r=document.createRange();r.selectNodeContents(pre);const s=getSelection();s.removeAllRanges();s.addRange(r);};
+    try{navigator.clipboard.writeText(t).then(ok,sel);}catch(x){sel();}
+  }));
+  prot(); ret(); gmm(); edu();
+})();
+</script>
+<script>
+(function(){
+  const $=id=>document.getElementById(id);
+  const ME='Soy Carlos Flores Díaz, asesor de Seguros Monterrey New York Life en CDMX.';
+  const TPL={
+    'Retiro':{det:'Detalle concreto de su publicación',ej:'cómo abriste tu PPR a los 31',t:(n,d)=>`Hola, ${n}. Leí lo que compartiste sobre ${d} y me gustó que ya estés pensando en tu retiro; no es común hacerlo tan pronto. ${ME} Me encantaría conocerte: ¿te late un café virtual de 15 minutos esta semana?`},
+    'Inversión a futuro':{det:'Detalle concreto de su publicación',ej:'diversificar más allá de CETES',t:(n,d)=>`Hola, ${n}. Vi tu publicación sobre ${d}. Coincido en que vale la pena pensar a largo plazo y con calma. ${ME} ¿Te gustaría que nos conociéramos en una llamada corta de 15 minutos?`},
+    'Protección patrimonial':{det:'Detalle concreto de su publicación',ej:'proteger lo que has construido con tu negocio',t:(n,d)=>`Hola, ${n}. Leí lo que compartiste sobre ${d}. Cuidar lo que uno ha construido es algo que muchos posponen, y tú ya lo traes en mente. ${ME} Me daría gusto conocerte; ¿tienes 15 minutos para un café virtual?`},
+    'Herencia':{det:'Detalle concreto de su publicación',ej:'dejar todo en orden para tus hijos',t:(n,d)=>`Hola, ${n}. Vi lo que escribiste sobre ${d}. Pensar en lo que le dejas a tu familia dice mucho de ti. ${ME} ¿Te parece si nos conocemos en un café virtual de 15 minutos?`},
+    'Estrategia financiera':{det:'Detalle concreto de su publicación',ej:'tu plan para ordenar tus finanzas este año',t:(n,d)=>`Hola, ${n}. Me gustó tu publicación sobre ${d}; se nota que te tomas en serio tus finanzas. ${ME} Me encantaría conocerte y platicar 15 minutos, sin compromiso. ¿Te late esta semana?`},
+    'evento':{det:'Nombre del evento y de qué platicaron',ej:'la Semana de Educación Financiera, cuando platicamos de tu retiro',t:(n,d)=>`Hola, ${n}. Coincidimos en ${d} y me quedé pensando en lo que platicamos. Soy Carlos Flores Díaz, asesor de Seguros Monterrey New York Life. ¿Te parece si nos tomamos un café de 15 minutos para conocernos mejor?`,canal:'Evento'},
+    'referido':{det:'Nombre de quien te lo refirió',ej:'Laura Gómez',t:(n,d)=>`Hola, ${n}. ${d} me compartió tu contacto y me dijo que podría interesarte conocerme. ${ME} ¿Te late un café virtual de 15 minutos para presentarme?`,canal:'Referido'}
+  };
+  const TEMAS=['Retiro','Inversión a futuro','Protección patrimonial','Herencia','Estrategia financiera'];
+  let mode='first', lastTpl=$('f-tpl').value;
+  function words(t){ return (t.trim().match(/\S+/g)||[]).length; }
+  function draw(){
+    if(mode!=='first') return;
+    const key=$('f-tpl').value, T=TPL[key];
+    const n=$('f-name').value.trim()||'[Nombre]';
+    const raw=$('f-det').value.trim(), d=raw||'['+T.det.toLowerCase()+']';
+    const msg=T.t(n,d);
+    $('msg').textContent=msg;
+    $('count').textContent=words(msg)+' palabras';
+    $('copy').hidden=false;
+    const badge=$('badge'); badge.textContent='Plantilla'; badge.className='pill good';
+    const canal=T.canal||$('f-channel').value;
+    $('out-title').textContent='Mensaje para '+(T.canal==='Evento'?'quien conociste':T.canal==='Referido'?'tu referido':canal);
+    $('stage').textContent='Señal detectada → Primer mensaje enviado';
+    const tema=TEMAS.includes(key)?key:$('f-topic').value;
+    const dl=$('fields'); dl.replaceChildren();
+    [['Tema de interés',tema],['Canal de contacto',T.canal||canal],['Señal pública (link)',$('f-link').value.trim()||'—']].forEach(([k,v])=>{const dt=document.createElement('dt');dt.textContent=k;const dd=document.createElement('dd');dd.textContent=v;dl.append(dt,dd);});
+    $('cal-block').hidden=true;
+    const ul=$('notes'); ul.replaceChildren();
+    const notes=[];
+    if(!raw) notes.push('Escribe el detalle: sin un detalle real de la persona, mejor no envíes el mensaje.');
+    if(key==='referido') notes.push('Confirma con quien te refirió que está bien mencionarlo.');
+    else if(key!=='evento') notes.push('Revisa que el detalle esté tal cual en su publicación y que sea reciente.');
+    notes.push('Menos de 80 palabras, sin hablar de precios ni preguntar por necesidades.');
+    notes.forEach(t=>{const li=document.createElement('li');li.textContent=t;ul.append(li);});
+    $('notes-block').hidden=false;
+  }
+  function syncLabel(){ const T=TPL[$('f-tpl').value]; $('f-det-label').textContent=T.det; $('f-det').placeholder='Ej. '+T.ej; }
+  $('f-tpl').addEventListener('change',()=>{ const k=$('f-tpl').value; if(TEMAS.includes(k)) $('f-topic').value=k; if(TPL[k].canal==='Evento') $('f-channel').value='Evento'; if($('f-det').value===TPL[lastTpl].ej) $('f-det').value=''; lastTpl=k; syncLabel(); draw(); });
+  $('f-topic').addEventListener('change',()=>{ const k=$('f-topic').value; if(TEMAS.includes($('f-tpl').value)){ $('f-tpl').value=k; lastTpl=k; syncLabel(); } draw(); });
+  ['f-name','f-det','f-channel','f-link'].forEach(id=>$(id).addEventListener('input',draw));
+  $('f-channel').addEventListener('change',draw);
+  document.querySelectorAll('.modes button[data-mode]').forEach(b=>b.addEventListener('click',()=>{ mode=b.dataset.mode; if(mode==='first') draw(); }));
+  syncLabel(); draw();
+})();
+</script>
+<script>
+(function(){
+  const $=id=>document.getElementById(id);
+  const money=v=>'$'+Math.round(Number(v)||0).toLocaleString('es-MX');
+  const val=id=>$(id).value, txt=id=>$(id).textContent;
+  const opt=id=>{const s=$(id); return s.value==='custom'?'Monto propio':s.options[s.selectedIndex].text.split(' · ')[0];};
+  const cliente=()=>$('calc-cliente').value.trim();
+  const fechaLarga=d=>new Date(d).toLocaleDateString('es-MX',{day:'numeric',month:'long',year:'numeric'});
+  let db=null, dl=null, rows=[], filtro='todo', currentBlob=null, currentName='resumen.png';
+
+  function spec(k){
+    if(k==='prot') return {k,titulo:'Análisis de protección familiar',filas:[['Ingreso mensual',money(val('nc-ingreso'))],['Años de protección',val('nc-anos')+' años'],['Hijos',val('nc-hijos')],['Educación por hijo',money(val('nc-edu'))],['Deudas (hipoteca, créditos)',money(val('nc-deudas'))],['Ahorros y seguros actuales',money(val('nc-ahorro'))]],res:['Suma asegurada sugerida',txt('nc-total')],extra:[],nota:'Cálculo: ingreso × 12 × años de protección + deudas + educación de los hijos − ahorros y seguros actuales.'};
+    if(k==='ret') return {k,titulo:'Proyección para el retiro',filas:[['Edad actual',val('rt-edad')+' años'],['Edad de retiro',val('rt-retiro')+' años'],['Ahorro mensual',money(val('rt-ahorro'))],['Aumento anual del ahorro',val('rt-aumento')+'%'],['Rendimiento anual supuesto',val('rt-tasa')+'%'],['Inflación anual',val('rt-infl')+'%']],res:['Podría acumular',txt('rt-total')],extra:[['Total aportado',txt('rt-aporte')],['Equivale en pesos de hoy',txt('rt-hoy')]],nota:'Aportación mensual con interés compuesto mensual. El rendimiento es un supuesto y puede variar.'};
+    if(k==='gmm') return {k,titulo:'Costo de un evento médico mayor',filas:[['Padecimiento de referencia',opt('gm-evento')],['Dentro de',val('gm-anos')+' años'],['Inflación médica anual',val('gm-infl')+'%'],['Ahorros disponibles',money(val('gm-ahorro'))]],res:['Costo estimado',txt('gm-costo')],extra:[['Lo cubren sus ahorros',txt('gm-cubre')],['Le faltaría',txt('gm-falta')]],nota:'Costo promedio por caso de alto costo pagado por aseguradoras en México (AMIS, 2025), ajustado por inflación médica.'};
+    return {k,titulo:'Ahorro para la universidad',filas:[['Edad del hijo',val('ed-edad')+' años'],['Edad de ingreso',val('ed-ingreso')+' años'],['Universidad',opt('ed-tipo')],['Inflación educativa',val('ed-infl')+'%'],['Rendimiento anual supuesto',val('ed-tasa')+'%'],['Ya tiene ahorrado',money(val('ed-ahorro'))]],res:['Ahorro mensual sugerido',txt('ed-mes')],extra:[['Costo esperado de la carrera',txt('ed-costo')],['Años por delante',txt('ed-anos')]],nota:'Costo de carrera de cuatro años (Expansión, 2026) llevado al año de ingreso con la inflación educativa.'};
+  }
+
+  /* ---------- imagen formal ---------- */
+  let logo=null;
+  const logoReady=new Promise(res=>{ const im=new Image(); im.onload=()=>{logo=im;res();}; im.onerror=()=>res(); im.src='assets/logo-diaz-transparente.webp'; });
+  function wrap(g,t,x,y,max,lh){ const w=String(t).split(' '); let line=''; for(const p of w){ const test=line?line+' '+p:p; if(g.measureText(test).width>max&&line){ g.fillText(line,x,y); line=p; y+=lh; } else line=test; } if(line){ g.fillText(line,x,y); y+=lh; } return y; }
+  async function render(s){
+    await Promise.all(['700 60px "Playfair Display"','700 30px Manrope','500 28px Manrope'].map(f=>document.fonts.load(f).catch(()=>{})));
+    await logoReady;
+    const W=1080,H=1350,c=document.createElement('canvas'); c.width=W; c.height=H; const g=c.getContext('2d');
+    const NAVY='#0a1428', GOLD='#c99a3a', SOFT='#5a6a83', INK='#14213a';
+    g.fillStyle='#fbf8f2'; g.fillRect(0,0,W,H);
+    g.fillStyle=NAVY; g.fillRect(0,0,W,230); g.fillStyle='#e4bf6c'; g.fillRect(0,230,W,6);
+    if(logo){ const h=150, w=logo.width*h/logo.height; g.drawImage(logo,60,40,w,h); }
+    g.textAlign='right'; g.fillStyle='#ffffff'; g.font='700 40px "Playfair Display", Georgia, serif'; g.fillText('Carlos Flores Díaz',W-64,98);
+    g.fillStyle='#cfd9ea'; g.font='500 25px Manrope, Arial, sans-serif'; g.fillText('Asesor · Seguros Monterrey New York Life',W-64,140);
+    g.fillStyle='#e4bf6c'; g.font='700 25px Manrope, Arial, sans-serif'; g.fillText('WhatsApp 55 7331 6238',W-64,180);
+    g.textAlign='left'; g.fillStyle=NAVY; g.font='700 54px "Playfair Display", Georgia, serif';
+    let y=wrap(g,s.titulo,64,320,W-128,62);
+    g.fillStyle=SOFT; g.font='500 27px Manrope, Arial, sans-serif';
+    g.fillText((s.cliente?'Preparado para '+s.cliente+' · ':'')+fechaLarga(s.fecha||Date.now()),64,y+4); y+=56;
+    g.font='500 28px Manrope, Arial, sans-serif';
+    for(const [l,v] of s.filas){ g.fillStyle=SOFT; g.textAlign='left'; g.fillText(l,64,y+30); g.fillStyle=INK; g.font='700 28px Manrope, Arial, sans-serif'; g.textAlign='right'; g.fillText(v,W-64,y+30); g.font='500 28px Manrope, Arial, sans-serif'; g.fillStyle='#e6dfcf'; g.fillRect(64,y+52,W-128,2); y+=64; }
+    y+=22; const bh=168;
+    g.fillStyle='#fff6e0'; g.strokeStyle=GOLD; g.lineWidth=3; g.beginPath(); g.roundRect?g.roundRect(64,y,W-128,bh,22):g.rect(64,y,W-128,bh); g.fill(); g.stroke();
+    g.textAlign='center'; g.fillStyle=SOFT; g.font='600 27px Manrope, Arial, sans-serif'; g.fillText(s.res[0].toUpperCase(),W/2,y+52);
+    g.fillStyle=NAVY; g.font='700 70px "Playfair Display", Georgia, serif'; g.fillText(s.res[1],W/2,y+132);
+    y+=bh+24; g.textAlign='left';
+    for(const [l,v] of (s.extra||[])){ g.fillStyle=SOFT; g.font='500 26px Manrope, Arial, sans-serif'; g.fillText(l,64,y+26); g.fillStyle=INK; g.font='700 26px Manrope, Arial, sans-serif'; g.textAlign='right'; g.fillText(v,W-64,y+26); g.textAlign='left'; y+=46; }
+    g.fillStyle='#e4bf6c'; g.fillRect(64,H-178,W-128,3);
+    g.fillStyle=SOFT; g.font='500 21px Manrope, Arial, sans-serif';
+    let yy=wrap(g,s.nota,64,H-140,W-128,29);
+    wrap(g,'Estimación ilustrativa para orientar la conversación; no es una cotización. Primas, coberturas y condiciones dependen del producto y del perfil del asegurado.',64,yy+2,W-128,29);
+    return c;
+  }
+  async function showImage(s){
+    const c=await render(s);
+    c.toBlob(b=>{ currentBlob=b; $('img-prev').src=URL.createObjectURL(b); },'image/png');
+    currentName=(s.titulo+(s.cliente?' '+s.cliente:'')).normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-zA-Z0-9]+/g,'-').toLowerCase().replace(/^-|-$/g,'')+'.png';
+    $('img-status').textContent=''; $('img-save').hidden=!dl; $('img-modal').hidden=false; $('img-close').focus();
+  }
+  $('img-close').addEventListener('click',()=>{ $('img-modal').hidden=true; });
+  $('img-modal').addEventListener('click',e=>{ if(e.target.id==='img-modal') $('img-modal').hidden=true; });
+  document.addEventListener('keydown',e=>{ if(e.key==='Escape') $('img-modal').hidden=true; });
+  $('img-save').addEventListener('click',async()=>{
+    if(!dl||!currentBlob) return;
+    try{ await dl.save({filename:currentName,data:currentBlob}); $('img-status').textContent='Guardada.'; }
+    catch(e){ $('img-status').textContent=e&&e.code==='declined'?'No se guardó.':'No se pudo guardar aquí; usa Copiar imagen o mantén presionada la imagen.'; }
+  });
+  $('img-copy').addEventListener('click',async()=>{
+    try{ await navigator.clipboard.write([new ClipboardItem({'image/png':currentBlob})]); $('img-status').textContent='Imagen copiada: pégala en WhatsApp.'; }
+    catch(e){ $('img-status').textContent='Tu navegador no deja copiar imágenes aquí; usa Guardar imagen.'; }
+  });
+
+  /* ---------- registro ---------- */
+  async function guardar(doc,statusEl){
+    if(!db){ statusEl&&(statusEl.textContent='El registro solo funciona dentro de Claude.'); return; }
+    try{ await db.collection('registro').add(Object.assign({fecha:new Date().toISOString()},doc)); statusEl&&(statusEl.textContent='Guardado en tu registro.'); }
+    catch(e){ statusEl&&(statusEl.textContent='No se pudo guardar. Intenta de nuevo.'); }
+  }
+  function calcDoc(k){ const s=spec(k); s.cliente=cliente(); return {tipo:'calculo',calc:k,titulo:s.titulo,nombre:s.cliente,resumen:document.querySelector('[data-sum="'+k+'"]').textContent,spec:s}; }
+  document.querySelectorAll('[data-img]').forEach(b=>b.addEventListener('click',async()=>{ const d=calcDoc(b.dataset.img); d.spec.fecha=new Date().toISOString(); await showImage(d.spec); guardar(d,$('img-status')); }));
+  document.querySelectorAll('[data-save]').forEach(b=>b.addEventListener('click',async()=>{ await guardar(calcDoc(b.dataset.save)); const t=b.textContent; b.textContent=db?'Guardado':'Solo dentro de Claude'; setTimeout(()=>b.textContent=t,1500); }));
+  $('save-msg').addEventListener('click',async()=>{
+    const b=$('save-msg'), msg=$('msg').textContent.trim(); if(!msg) return;
+    const tpl=$('f-tpl'); const mode=document.querySelector('.modes button[aria-pressed="true"]');
+    await guardar({tipo:'mensaje',titulo:(mode?mode.textContent:'Mensaje')+' · '+(tpl.options[tpl.selectedIndex]?tpl.options[tpl.selectedIndex].text:''),nombre:$('f-name').value.trim(),resumen:msg});
+    const t=b.textContent; b.textContent=db?'Guardado':'Solo dentro de Claude'; setTimeout(()=>b.textContent=t,1500);
+  });
+
+  function el(t,c,x){ const e=document.createElement(t); if(c) e.className=c; if(x!=null) e.textContent=x; return e; }
+  function renderList(){
+    const list=$('reg-list'), q=$('reg-buscar').value.trim().toLowerCase(); list.replaceChildren();
+    const shown=rows.filter(r=>(filtro==='todo'||r.tipo===filtro)&&(!q||String(r.nombre||'').toLowerCase().includes(q)));
+    if(!shown.length){ const e=el('div','empty'); e.append(el('b',null,rows.length?'Nada con ese filtro':'Tu registro está vacío'), el('span',null,rows.length?'Cambia el filtro o la búsqueda.':'Guarda un cálculo o un mensaje con "Guardar en registro", o crea una imagen de una calculadora: quedan aquí con fecha.')); list.append(e); return; }
+    shown.forEach(r=>{
+      const card=el('article','item reg');
+      const top=el('div','top'); top.append(el('span','pill tipo',r.tipo==='mensaje'?'Mensaje':'Cálculo'), el('span','date',new Date(r.fecha).toLocaleString('es-MX',{day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'})));
+      card.append(top, el('h2','name',(r.nombre||'Sin nombre')+' · '+(r.titulo||'')), el('pre',null,r.resumen||''));
+      const act=el('div','actions');
+      if(r.spec){ const b=el('button','btn primary','Ver imagen'); b.type='button'; b.onclick=()=>showImage(r.spec); act.append(b); }
+      const cp=el('button','btn','Copiar'); cp.type='button'; cp.onclick=()=>{ try{ navigator.clipboard.writeText(r.resumen||'').then(()=>{cp.textContent='Copiado';setTimeout(()=>cp.textContent='Copiar',1400);}); }catch(e){} }; act.append(cp);
+      const del=el('button','btn','Borrar'); del.type='button'; let armed=false;
+      del.onclick=async()=>{ if(!armed){ armed=true; del.textContent='¿Seguro? Toca otra vez'; setTimeout(()=>{armed=false; del.textContent='Borrar';},3000); return; } try{ await db.collection('registro').doc(r.id).delete(); }catch(e){ $('reg-status').textContent='No se pudo borrar.'; } };
+      act.append(del); card.append(act); list.append(card);
+    });
+  }
+  document.querySelectorAll('[data-rf]').forEach(b=>b.addEventListener('click',()=>{ filtro=b.dataset.rf; document.querySelectorAll('[data-rf]').forEach(x=>x.setAttribute('aria-pressed',String(x===b))); renderList(); }));
+  $('reg-buscar').addEventListener('input',renderList);
+  (async()=>{
+    const [d,dw]=await Promise.all([window.claude.use('db'),window.claude.use('downloads')]); db=d; dl=dw;
+    if(!db){ $('reg-status').textContent='Abre esta página dentro de Claude para usar el registro.'; return; }
+    db.collection('registro').orderBy('fecha','desc').limit(500).onSnapshot(s=>{ rows=s.docs.map(x=>Object.assign({id:x.id},x.data())); renderList(); },()=>{ $('reg-status').textContent='No se pudo cargar el registro.'; });
+  })();
+})();
+</script>
+<script>
+(function(){
+  const $=id=>document.getElementById(id);
+  const MAP={prot:['Suma asegurada sugerida','nc-total'],ret:['Podría acumular','rt-total'],gmm:['Le faltaría','gm-falta'],edu:['Ahorro al mes','ed-mes']};
+  function upd(){ const b=document.querySelector('[data-calc][aria-pressed="true"]'); const k=b?b.dataset.calc:'prot'; const [l,id]=MAP[k]; $('peek-label').textContent=l; $('peek-value').textContent=$(id).textContent; }
+  ['nc-form','rt-form','gm-form','ed-form'].forEach(f=>{ $(f).addEventListener('input',()=>setTimeout(upd)); $(f).addEventListener('change',()=>setTimeout(upd)); });
+  document.querySelectorAll('[data-calc]').forEach(b=>b.addEventListener('click',()=>setTimeout(upd)));
+  upd();
+  // al cambiar de pestaña en el celular, volver arriba
+  document.querySelectorAll('.tabs [data-tab]').forEach(b=>b.addEventListener('click',()=>{ if(matchMedia('(max-width:700px)').matches) window.scrollTo({top:0}); }));
+})();
+</script>
+
+</body></html>
